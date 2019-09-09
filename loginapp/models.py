@@ -28,7 +28,7 @@ class CitysModel(models.Model):
                             verbose_name='城市名称',
                             null=False)
     is_popular = models.BooleanField(verbose_name='是否热门',
-                                     choices=((True,'是'),
+                                     choices=((True, '是'),
                                               (False, '否')))
     start_str = models.CharField(max_length=1,
                                  verbose_name='排行名称')
