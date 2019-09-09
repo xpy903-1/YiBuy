@@ -55,7 +55,17 @@ class PictureModel(models.Model):
 
     # 商品图片
     picture_path = models.ImageField(verbose_name='商品图片',
-                                     upload_to='picture')
+                                     upload_to='picture',
+                                     width_field='picture_width',
+                                     height_field='picture_height')
+
+    # 图片宽度
+    picture_width = models.IntegerField(verbose_name='商品图片宽度',
+                                        null=True)
+
+    # 图片高度
+    picture_height = models.IntegerField(verbose_name='商品图片高度',
+                                         null=True)
 
     # 主键 ID 设置为 UUID
     def save(self, force_insert=False, force_update=False, using=None,

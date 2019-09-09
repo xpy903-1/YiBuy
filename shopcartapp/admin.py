@@ -13,8 +13,8 @@ class ShopCarAdmin(admin.ModelAdmin):
 
 # 商品图片
 class PictureAdmin(admin.ModelAdmin):
-    list_display = ('id', 'picture_name', 'picture_path')  # 显示字段
-    fields = ('picture_name', 'picture_path')  # 可更改字段
+    list_display = ('id', 'picture_name', 'picture_path', 'picture_width', 'picture_height')  # 显示字段
+    fields = ('picture_name', 'picture_path', 'picture_width', 'picture_height')  # 可更改字段
     ordering = ('id',)  # 按 id 排序
 
 

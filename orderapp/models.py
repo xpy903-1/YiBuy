@@ -2,6 +2,7 @@ import uuid
 
 from django.db import models
 
+
 # Create your models here.
 class OrderModel(models.Model):
     id = models.UUIDField(primary_key=True)
@@ -14,15 +15,16 @@ class OrderModel(models.Model):
                                 verbose_name='下单时间')
 
     address_id = models.ForeignKey('addressapp.models.addressModel',
-                                     verbose_name='地址ID')
+                                   verbose_name='地址ID')
 
     order_status = models.IntegerField(verbose_name='订单状态',
-                                      choices=((1, '已下单'),
-                                               (2, '已支付'),
-                                               (3, '已发货'),
-                                               (4, '已收货'),
-                                               (5, '已完成'),
-                                               (0, '已取消')))
+                                       choices=((1, '已下单'),
+                                                (2, '已支付'),
+                                                (3, '已发货'),
+                                                (4, '已收货'),
+                                                (5, '已完成'),
+                                                (0, '已取消')))
+
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         self.id = uuid.uuid4().hex
@@ -44,10 +46,12 @@ class OrderDetailModel(models.Model):
                                  on_delete=models.CASCADE)
 
     count = models.IntegerField(verbose_name='商品数量')
+
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         self.id = uuid.uuid4().hex
         super().save()
+
     class Meta:
         db_table = 'app_orderdetail'
         verbose_name_plural = verbose_name = '订单详情'
