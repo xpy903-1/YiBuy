@@ -1,7 +1,10 @@
+import uuid
+
 from django.db import models
 
 # Create your models here.
 class OrderModel(models.Model):
+    id = models.UUIDField(primary_key=True)
     user_id = models.ForeignKey('indexapp.models.UserModel',
                                 verbose_name='用户ID')
     total = models.FloatField(verbose_name='总价格')
@@ -17,17 +20,27 @@ class OrderModel(models.Model):
                                                (4, '已收货'),
                                                (5, '已完成'),
                                                (0, '已取消')))
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.id = uuid.uuid4().hex
+        super().save()
+
     class Meta:
         db_table = 'app_order'
         verbose_name_plural = verbose_name = '订单列表'
 
 
 class OrderDetailModel(models.Model):
+    id = models.UUIDField(primary_key=True)
     order_id = models.ForeignKey(OrderModel,
                                  verbose_name='订单ID')
     goods_id = models.ForeignKey('goodsapp.models.GoodsModel',
                                  verbose_name='商品ID')
     count = models.IntegerField(verbose_name='商品数量')
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.id = uuid.uuid4().hex
+        super().save()
     class Meta:
         db_table = 'app_orderdetail'
         verbose_name_plural = verbose_name = '订单详情'
