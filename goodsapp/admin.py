@@ -10,7 +10,7 @@ class FirstClassifyAdmin(admin.ModelAdmin):
 
 class SecClassifyAdmin(admin.ModelAdmin):
     list_display = ('uid', 'name')
-    fields = ('name',)
+    fields = ('name', 'uid')
 
 class GoodsModelAdmin(admin.ModelAdmin):
     list_display = ('uid', 'goods_img', 'goods_img_width', 'goods_img_height',

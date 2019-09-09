@@ -46,7 +46,8 @@ class SecClassify(models.Model):
              update_fields=None):
 
         # self.uid1 = uuid.uuid4().hex
-        self.uid = uuid.uuid4().hex
+        if not self.uid:
+            self.uid = uuid.uuid4().hex
 
         super().save()
 
