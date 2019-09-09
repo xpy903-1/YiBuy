@@ -21,12 +21,12 @@ from YiBuyAPP import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('goods', include('goodsapp.urls.py')),
-    path('index', include('indexapp.urls.py')),
-    path('login', include('loginapp.urls.py')),
-    path('login2', include('loginapp2.urls.py')),
-    path('order', include('orderapp.urls.py')),
-    path('shopcart', include('shopcartapp.urls.py')),
-    path('address', include('addressapp.urls.py')),
+    path('goods', include('goodsapp.urls')),
+    path('index', include('indexapp.urls')),
+    path('login', include('loginapp.urls')),
+    path('login2', include('loginapp2.urls')),
+    path('order', include('orderapp.urls')),
+    path('shopcart', include('shopcartapp.urls')),
+    path('address', include('addressapp.urls')),
 ]+static(settings.MEDIA_URL,
          document_root=settings.MEDIA_ROOT)
