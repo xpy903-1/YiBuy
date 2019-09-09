@@ -6,7 +6,13 @@ from django.db import models
 # Create your models here.
 class EntertainmentModel(models.Model):
     picture = models.ImageField(verbose_name='图片',
-                                upload_to='login/images')
+                                upload_to='login/images',
+                                width_field='pic_width',
+                                height_field='pic_height')
+    pic_width = models.IntegerField(verbose_name='图片宽',
+                                    null=True)
+    pic_height = models.IntegerField(verbose_name='图片高',
+                                     null=True)
     description = models.TextField(verbose_name='描述',
                                    blank=True)
     time = models.DateTimeField(verbose_name='时间',
@@ -49,15 +55,15 @@ class CitysModel(models.Model):
 
 
 class NavigationModel(models.Model):
-    img = models.ImageField(verbose_name='导航图片',
-                            upload_to='login/images')
-
+    img = models.ForeignKey('loginapp2.NavigationDetaiModel',
+                            verbose_name='导航图片',
+                            on_delete=models.CASCADE)
     img_name = models.CharField(max_length=20,
                                 verbose_name='图片名称')
 
     img_id = models.ForeignKey('loginapp2.NavigationDetaiModel',
                                verbose_name='图片编号',
-                               on_delete=True)
+                               on_delete=models.CASCADE)
 
     def __str__(self):
         return self.img_name
