@@ -66,8 +66,8 @@ class DiscountModel(models.Model):
             self.id = uuid.uuid4().hex
         super().save()
 
-    def __str__(self):
-        return self.user_id
+    # def __str__(self):
+    #     return self.user_id
 
     class Meta:
         db_table = 'app_discount'
