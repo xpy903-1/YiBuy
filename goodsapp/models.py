@@ -5,7 +5,7 @@ from django.db import models
 # Create your models here.
 
 class FirstClassify(models.Model):
-    uid = models.CharField(verbose_name='一级分类id',
+    uid = models.UUIDField(verbose_name='一级分类id',
                            primary_key=True)
 
     name = models.CharField(verbose_name='一级分类名',
@@ -31,7 +31,7 @@ class FirstClassify(models.Model):
 
 
 class SecondClassify(models.Model):
-    uid = models.CharField(verbose_name='二级分类id',
+    uid = models.UUIDField(verbose_name='二级分类id',
                            primary_key=True)
 
     name = models.CharField(verbose_name='二级分类名',
@@ -51,7 +51,7 @@ class SecondClassify(models.Model):
         verbose_name_pural = verbose_name = '二级分类表'
 
 class GoodsModel(models.Model):
-    uid = models.CharField(verbose_name='水果id',
+    uid = models.UUIDField(verbose_name='水果id',
                            primary_key=True)
 
     goods_img = models.ImageField(verbose_name='商品图片',
