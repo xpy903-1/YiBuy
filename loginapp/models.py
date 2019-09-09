@@ -54,8 +54,9 @@ class NavigationModel(models.Model):
     img_name = models.CharField(max_length=20,
                                 verbose_name='图片名称')
 
-    img_id = models.CharField(verbose_name='图片编号',
-                              max_length=5)
+    img_id = models.ForeignKey('loginapp2.NavigationDetaiModel',
+                               verbose_name='图片编号',
+                               on_delete=True)
 
     def __str__(self):
         return self.img_name
