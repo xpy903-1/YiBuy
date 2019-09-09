@@ -15,7 +15,7 @@ class BaseModel(models.Model):
                                on_delete=models.CASCADE)
     img_name = models.CharField(max_length=50,
                                 verbose_name="图片名")
-    img = models.ImageField(verbose_name="图片",
+    img1 = models.ImageField(verbose_name="图片",
                             upload_to='loginapp2',
                             width_field='img_width',
                             height_field='img_height'
