@@ -16,8 +16,6 @@ class UserModel(models.Model):
                            choices=(('male', '男'), ('female', '女')), default='male')
     number = models.CharField(max_length=18, verbose_name='身份证号')
     img1 = models.ImageField(verbose_name='用户图像', upload_to='users',
-                             width_field='users_img_width',
-                             height_field='users_img_height',
                              null=True,
                              blank=True
                              )
