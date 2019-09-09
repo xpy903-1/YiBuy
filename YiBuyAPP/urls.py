@@ -18,15 +18,16 @@ from django.urls import path, include
 from django.conf.urls.static import static
 
 from YiBuyAPP import settings
+from api import api_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('goods', include('goodsapp.urls')),
-    path('index', include('indexapp.urls')),
-    path('login', include('loginapp.urls')),
-    path('login2', include('loginapp2.urls')),
-    path('order', include('orderapp.urls')),
-    path('shopcart', include('shopcartapp.urls')),
-    path('address', include('addressapp.urls')),
+    path('api/', include(api_router.urls)),
+    path('index/', include('indexapp.urls')),
+    path('login/', include('loginapp.urls')),
+    path('login2/', include('loginapp2.urls')),
+    path('order/', include('orderapp.urls')),
+    path('shopcart/', include('shopcartapp.urls')),
+    path('address/', include('addressapp.urls')),
 ]+static(settings.MEDIA_URL,
          document_root=settings.MEDIA_ROOT)
