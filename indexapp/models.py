@@ -41,7 +41,7 @@ class UserCommentModel(models.Model):
 
 class ViceCommentModel(models.Model):
     comment_id = models.ForeignKey(UserCommentModel, Cverbose_name='评论ID', on_delete=models.CASCADE)
-    comment = models.CharField(max_length=400, verbose_name='评论内容')
+    comment = models.CharField(max_length=500, verbose_name='评论内容')
 
     def __str__(self):
         return self.comment
