@@ -1,11 +1,16 @@
+import uuid
+
 from django.db import models
 
 
 # Create your models here.
 class AddressModel(models.Model):
-    user_id = models.ForeignKey('indexapp.UserModel',
+    id = models.UUIDField(primary_key=True,
+                          verbose_name='地址编号')
+
+    user_id = models.ForeignKey('indexapp.models.UserModel',
                                 related_name='user',
-                                on_delete=models.SET_NULL,
+                                on_delete=models.CASCADE,
                                 verbose_name='用户ID')
 
     ads = models.CharField(max_length=100,
@@ -17,6 +22,12 @@ class AddressModel(models.Model):
     phone = models.CharField(max_length=11,
                              verbose_name='手机号码')
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if not self.id:
+            self.id = uuid.uuid4().hex
+        super().save()
+
     def __str__(self):
         return self.name
 
@@ -26,10 +37,13 @@ class AddressModel(models.Model):
 
 
 class DiscountModel(models.Model):
-    user_id = models.ForeignKey('indexapp.UserModel',
+    id = models.UUIDField(primary_key=True,
+                          verbose_name='优惠活动编号')
+
+    user_id = models.ForeignKey('indexapp.models.UserModel',
                                 verbose_name='用户ID',
                                 related_name='user',
-                                on_delete=models.SET_NULL)
+                                on_delete=models.CASCADE)
 
     discount_amout = models.FloatField(verbose_name='折扣金额',
                                        default=.8)
@@ -42,6 +56,12 @@ class DiscountModel(models.Model):
 
     end_time = models.CharField(max_length=30,
                                 verbose_name='结束时间')
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if not self.id:
+            self.id = uuid.uuid4().hex
+        super().save()
 
     def __str__(self):
         return self.user_id
