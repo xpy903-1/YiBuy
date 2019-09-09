@@ -17,7 +17,7 @@ class OrderModel(models.Model):
 
     total = models.FloatField(verbose_name='总价格')
 
-    time = models.DateTimeField(auto_now=True,
+    time = models.DateTimeField(auto_now_add=True,
                                 verbose_name='下单时间')
 
     address_id = models.ForeignKey(AddressModel,

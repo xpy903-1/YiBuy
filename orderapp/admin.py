@@ -6,7 +6,7 @@ from orderapp.models import OrderModel, OrderDetailModel
 
 class OrderModelAdmin(admin.ModelAdmin):
     list_display = ['id', 'user_id', 'total', 'time', 'address_id', 'order_status']
-    fields = ['user_id', 'total', 'time', 'address_id', 'order_status']
+    fields = ['user_id', 'total', 'address_id', 'order_status']
 
 
 class OrderDetailModelAdmin(admin.ModelAdmin):
