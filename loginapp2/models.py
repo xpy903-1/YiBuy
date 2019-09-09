@@ -29,7 +29,7 @@ class BaseModel(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        if self.id:
+        if not self.id:
             self.id = uuid.uuid4().hex
         super().save()
 

@@ -23,7 +23,7 @@ class CarsouseiMapModelAdmin(admin.ModelAdmin):
 class SelectedModelAdmin(admin.ModelAdmin):
     list_display = ('id', 'img_id', 'img_name', 'img1', 'img_height',
                     'img_width')
-    fields = ('img_id', 'img_name', 'img1', 'img_height', 'img_width')
+    fields = ('img_id', 'img_name', 'img1')
 
 
 admin.site.register(NavigationDetaiModel, NavigationDetaiModelAdmin)
