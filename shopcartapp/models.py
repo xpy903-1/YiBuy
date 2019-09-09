@@ -29,7 +29,7 @@ class ShopCarModel(models.Model):
                                       default=True)  # 默认选中
 
     def __str__(self):
-        return self.user_id + "-" + self.good_id
+        return str(self.id)
 
     # 主键 ID 设置为 uuid
     def save(self, force_insert=False, force_update=False, using=None,
