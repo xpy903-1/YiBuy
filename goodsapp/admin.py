@@ -21,6 +21,6 @@ class GoodsModelAdmin(admin.ModelAdmin):
                     'register_time', 'update_time')
 
 
-admin.site.register(FirstClassify, FirstClassifyAdmin)
-admin.site.register(SecondClassify, SecondClassifyAdmin)
+
+admin.site.register(CateClassify, CateClassifyAdmin)
 admin.site.register(GoodsModel, GoodsModelAdmin)
