@@ -77,8 +77,13 @@ WSGI_APPLICATION = 'YiBuyAPP.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'yiguo_app',
+        'HOST': '114.116.231.3',
+        'PORT': 3306,
+        'USERNAME': 'root',
+        'PASSWORD': 'root',
+        'CHARSET': 'utf8'
     }
 }
 
@@ -120,3 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+MEDIA_URL = '/m/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

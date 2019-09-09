@@ -2,6 +2,8 @@ import uuid
 
 from django.db import models
 from goodsapp.models import GoodsModel
+
+
 # Create your models here.
 
 
