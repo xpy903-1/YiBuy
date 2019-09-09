@@ -4,51 +4,35 @@ from django.db import models
 
 # Create your models here.
 
-class FirstClassify(models.Model):
-    uid = models.UUIDField(verbose_name='一级分类id',
+class CateClassify(models.Model):
+    uid1 = models.UUIDField(verbose_name='一级分类id',
                            primary_key=True)
 
-    name = models.CharField(verbose_name='一级分类名',
+    name1 = models.CharField(verbose_name='一级分类名',
                             max_length=20)
 
+    uid2 = models.ForeignKey('CateClassify',
+                             verbose_name='二级分类id')
+
+    name2 = models.CharField(verbose_name='二级分类名',
+                             max_length=20)
+
     def __str__(self):
-        return self.name
+        return self.name1 + ':' + self.name2
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
 
-        self.uid = uuid.uuid4().hex
+        self.uid1 = uuid.uuid4().hex
+        self.uid2 = uuid.uuid4().hex
 
         super().save()
 
-
-
-
-
     class Meta:
-        db_table = 't_first_classcify'
-        verbose_name_pural = verbose_name = '一级分类表'
+        db_table = 't_cate_classcify'
+        verbose_name_pural = verbose_name = '分类表'
 
 
-class SecondClassify(models.Model):
-    uid = models.UUIDField(verbose_name='二级分类id',
-                           primary_key=True)
-
-    name = models.CharField(verbose_name='二级分类名',
-                            max_length=20)
-
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
-        self.uid = uuid.uuid4().hex
-
-        super().save()
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        db_table = 't_second_classcify'
-        verbose_name_pural = verbose_name = '二级分类表'
 
 class GoodsModel(models.Model):
     uid = models.UUIDField(verbose_name='水果id',
@@ -98,13 +82,11 @@ class GoodsModel(models.Model):
     detail_img_height = models.IntegerField(verbose_name='高',
                                        null=True)
 
-    first_cate_id = models.ForeignKey(FirstClassify,
+    cate_id = models.ForeignKey(CateClassify,
                                       on_delete=models.CASCADE,
-                                      verbose_name='一级分类id')
+                                      verbose_name='分类id')
 
-    second_cate_id = models.ForeignKey(SecondClassify,
-                                       on_delete=models.CASCADE,
-                                       verbose_name='二级分类id')
+
 
     description = models.TextField(verbose_name='商品详情')
 
