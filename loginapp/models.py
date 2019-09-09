@@ -4,6 +4,9 @@ from django.db import models
 
 
 # Create your models here.
+from loginapp2.models import NavigationDetaiModel
+
+
 class EntertainmentModel(models.Model):
     picture = models.ImageField(verbose_name='图片',
                                 upload_to='login/images',
@@ -55,13 +58,13 @@ class CitysModel(models.Model):
 
 
 class NavigationModel(models.Model):
-    img = models.ForeignKey('loginapp2.NavigationDetaiModel',
-                            verbose_name='导航图片',
-                            on_delete=models.CASCADE)
+    # img = models.ForeignKey('loginapp2.NavigationDetaiModel',
+    #                         verbose_name='导航图片',
+    #                         on_delete=models.CASCADE)
     img_name = models.CharField(max_length=20,
                                 verbose_name='图片名称')
 
-    img_id = models.ForeignKey('loginapp2.NavigationDetaiModel',
+    img_id = models.ForeignKey(NavigationDetaiModel,
                                verbose_name='图片编号',
                                on_delete=models.CASCADE)
 

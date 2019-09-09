@@ -5,9 +5,13 @@ from django.db import models
 
 # Create your models here.
 # 创建一个抽象模型类
+from goodsapp.models import GoodsModel
+from shopcartapp.models import PictureModel
+
+
 class BaseModel(models.Model):
     id = models.UUIDField(primary_key=True)
-    img_id = models.ForeignKey('shopcartapp.models.PictureModel',
+    img_id = models.ForeignKey(PictureModel,
                                on_delete=models.CASCADE)
 
 
@@ -22,7 +26,7 @@ class BaseModel(models.Model):
 
 
 class NavigationDetaiModel(BaseModel):
-    goods_id = models.ForeignKey('goodsapp.models.GoodsModel',
+    goods_id = models.ForeignKey(GoodsModel,
                                  verbose_name="商品ID",
                                  on_delete=models.CASCADE)
 
@@ -46,7 +50,7 @@ class SelectedModel(BaseModel):
 
 class CarsouseiMapModel(BaseModel):
 
-    goods_id = models.ForeignKey("goodsapp.models.GoodsModel",
+    goods_id = models.ForeignKey(GoodsModel,
                                  verbose_name="商品ID",
                                  on_delete=True)
 

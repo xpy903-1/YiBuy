@@ -14,7 +14,7 @@ class CitysModelAdmin(admin.ModelAdmin):
 
 
 class NavigationModelAdmin(admin.ModelAdmin):
-    list_display = ('img', 'img_name', 'img_id')
+    list_display = ('img_name', 'img_id')
 
 
 admin.site.register(EntertainmentModel, EntertainmentModelAdmin)

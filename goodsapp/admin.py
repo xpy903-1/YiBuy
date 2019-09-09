@@ -11,13 +11,13 @@ class CateClassifyAdmin(admin.ModelAdmin):
 class GoodsModelAdmin(admin.ModelAdmin):
     list_display = ('uid', 'goods_img', 'goods_img_width', 'goods_img_height',
                     'name', 'goods_price','sales_volume', 'storage', 'market_price',
-                    'produce_place',' detail_img', 'detail_img_width', 'detail_img_height',
+                    'produce_place','detail_img', 'detail_img_width', 'detail_img_height',
                     'cate_id', 'description', 'detail', 'is_selected',
                     'register_time', 'update_time')
 
     fields = ('goods_img',
                     'name', 'goods_price','sales_volume', 'storage', 'market_price',
-                    'produce_place',' detail_img',
+                    'produce_place', 'detail_img',
                     'cate_id', 'description', 'detail', 'is_selected',
                     'register_time', 'update_time')
 

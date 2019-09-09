@@ -5,20 +5,19 @@ from .models import NavigationDetaiModel, \
 
 # Register your models here.
 class NavigationDetaiModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'img_id.picture', 'img_id', 'img_id.picture_name',
-                    'goods_id')
-    fields = ('img_id.picture', 'img_id.picture_name',)
+    list_display = ('id', 'img_id', 'goods_id')
+    fields = ('img_id',)
 
 
 class CarsouseiMapModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'img_id.picture', 'img_id', 'img_id.picture_name',
+    list_display = ('id', 'img_id', 'img_id', 'img_id',
                     'goods_id')
-    fields = ('img_id.picture', 'img_id.picture_name',)
+    fields = ('img_id',)
 
 
 class SelectedModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'img_id.picture', 'img_id', 'img_id.picture_name')
-    fields = ('img_id.picture', 'img_id.picture_name',)
+    list_display = ('id', 'img_id')
+    fields = ('img_id',)
 
 
 admin.site.register(NavigationDetaiModel, NavigationDetaiModelAdmin)

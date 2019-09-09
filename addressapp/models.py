@@ -4,11 +4,14 @@ from django.db import models
 
 
 # Create your models here.
+from indexapp.models import UserModel
+
+
 class AddressModel(models.Model):
     id = models.UUIDField(primary_key=True,
                           verbose_name='地址编号')
 
-    user_id = models.ForeignKey('indexapp.models.UserModel',
+    user_id = models.ForeignKey(UserModel,
                                 related_name='user',
                                 on_delete=models.CASCADE,
                                 verbose_name='用户ID')
@@ -40,9 +43,9 @@ class DiscountModel(models.Model):
     id = models.UUIDField(primary_key=True,
                           verbose_name='优惠活动编号')
 
-    user_id = models.ForeignKey('indexapp.models.UserModel',
+    user_id = models.ForeignKey(UserModel,
                                 verbose_name='用户ID',
-                                related_name='user',
+                                related_name='users',
                                 on_delete=models.CASCADE)
 
     discount_amout = models.FloatField(verbose_name='折扣金额',

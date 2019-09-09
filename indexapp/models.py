@@ -44,7 +44,7 @@ class UserModel(models.Model):
 class UserCommentModel(models.Model):
     id = models.UUIDField(primary_key=True)
     user_id = models.ForeignKey(UserModel, verbose_name='用户ID', on_delete=models.CASCADE)
-    goods_id = models.ForeignKey('GoodsModel', on_delete=models.CASCADE, verbose_name='商品ID')
+    goods_id = models.ForeignKey(GoodsModel, on_delete=models.CASCADE, verbose_name='商品ID')
     detail = models.CharField(max_length=500, verbose_name='评论详情')
     time = models.DateTimeField(verbose_name='评论时间')
 
@@ -64,7 +64,7 @@ class UserCommentModel(models.Model):
 
 class ViceCommentModel(models.Model):
     id = models.UUIDField(primary_key=True)
-    comment_id = models.ForeignKey(UserCommentModel, Cverbose_name='评论ID', on_delete=models.CASCADE)
+    comment_id = models.ForeignKey(UserCommentModel, verbose_name='评论ID', on_delete=models.CASCADE)
     comment = models.CharField(max_length=500, verbose_name='评论内容')
 
     def __str__(self):

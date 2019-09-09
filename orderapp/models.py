@@ -4,18 +4,25 @@ from django.db import models
 
 
 # Create your models here.
+from addressapp.models import AddressModel
+from goodsapp.models import GoodsModel
+from indexapp.models import UserModel
+
+
 class OrderModel(models.Model):
     id = models.UUIDField(primary_key=True)
-    user_id = models.ForeignKey('indexapp.models.UserModel',
-                                verbose_name='用户ID')
+    user_id = models.ForeignKey(UserModel,
+                                verbose_name='用户ID',
+                                on_delete=models.CASCADE)
 
     total = models.FloatField(verbose_name='总价格')
 
     time = models.DateTimeField(auto_now=True,
                                 verbose_name='下单时间')
 
-    address_id = models.ForeignKey('addressapp.models.addressModel',
-                                   verbose_name='地址ID')
+    address_id = models.ForeignKey(AddressModel,
+                                   verbose_name='地址ID',
+                                   on_delete=models.CASCADE)
 
     order_status = models.IntegerField(verbose_name='订单状态',
                                        choices=((1, '已下单'),
@@ -41,7 +48,7 @@ class OrderDetailModel(models.Model):
                                  verbose_name='订单ID',
                                  on_delete=models.CASCADE)
 
-    goods_id = models.ForeignKey('goodsapp.models.GoodsModel',
+    goods_id = models.ForeignKey(GoodsModel,
                                  verbose_name='商品ID',
                                  on_delete=models.CASCADE)
 

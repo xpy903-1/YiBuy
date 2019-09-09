@@ -12,7 +12,8 @@ class CateClassify(models.Model):
                             max_length=20)
 
     uid2 = models.ForeignKey('CateClassify',
-                             verbose_name='二级分类id')
+                             verbose_name='二级分类id',
+                             on_delete=models.CASCADE)
 
     name2 = models.CharField(verbose_name='二级分类名',
                              max_length=20)
@@ -30,7 +31,7 @@ class CateClassify(models.Model):
 
     class Meta:
         db_table = 't_cate_classcify'
-        verbose_name_pural = verbose_name = '分类表'
+        verbose_name_plural = verbose_name = '分类表'
 
 
 
@@ -111,7 +112,7 @@ class GoodsModel(models.Model):
 
     class Meta:
         db_table = 't_goods'
-        verbose_name_pural = verbose_name = '商品表'
+        verbose_name_plural = verbose_name = '商品表'
 
 
 
