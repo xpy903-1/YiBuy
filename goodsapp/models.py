@@ -4,34 +4,55 @@ from django.db import models
 
 # Create your models here.
 
-class CateClassify(models.Model):
-    uid1 = models.UUIDField(verbose_name='一级分类id',
-                           primary_key=True)
 
-    name1 = models.CharField(verbose_name='一级分类名',
+class FirstClassify(models.Model):
+    uid = models.UUIDField(primary_key=True,
+                             verbose_name='一级分类id')
+
+
+    name = models.CharField(verbose_name='一级分类名',
                             max_length=20)
 
-    uid2 = models.ForeignKey('CateClassify',
-                             verbose_name='二级分类id',
-                             on_delete=models.CASCADE)
-
-    name2 = models.CharField(verbose_name='二级分类名',
-                             max_length=20)
-
     def __str__(self):
-        return self.name1 + ':' + self.name2
+        return self.name
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-
-        self.uid1 = uuid.uuid4().hex
-        self.uid2 = uuid.uuid4().hex
+        # self.uid1 = uuid.uuid4().hex
+        self.uid = uuid.uuid4().hex
 
         super().save()
 
     class Meta:
-        db_table = 't_cate_classcify'
-        verbose_name_plural = verbose_name = '分类表'
+        db_table = 't_first_classcify'
+        verbose_name_plural = verbose_name = '一级分类表'
+
+
+class SecClassify(models.Model):
+    uid = models.ForeignKey(FirstClassify,
+                             verbose_name='二级分类id',
+                             on_delete=models.CASCADE,
+                             )
+
+    name = models.CharField(verbose_name='二级分类名',
+                             max_length=20)
+
+    def __str__(self):
+        return self.name
+
+
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+
+        # self.uid1 = uuid.uuid4().hex
+        self.uid = uuid.uuid4().hex
+
+        super().save()
+
+    class Meta:
+        db_table = 't_sec_classcify'
+        verbose_name_plural = verbose_name = '二级分类表'
 
 
 
@@ -83,7 +104,7 @@ class GoodsModel(models.Model):
     detail_img_height = models.IntegerField(verbose_name='高',
                                        null=True)
 
-    cate_id = models.ForeignKey(CateClassify,
+    cate_id = models.ForeignKey(SecClassify,
                                       on_delete=models.CASCADE,
                                       verbose_name='分类id')
 
