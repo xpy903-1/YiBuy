@@ -11,13 +11,14 @@ class NavigationDetaiModelAdmin(admin.ModelAdmin):
 
 
 class CarsouseiMapModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'img_id', 'goods_id' 'img_name', 'img', 'img_height'
+    list_display = ('id', 'img_id', 'goods_id', 'img_name', 'img', 'img_height',
                     'img_width')
-    fields = ('img_id', 'goods_id' 'img_name', 'img', 'img_height', 'img_width')
+    fields = ('img_id', 'goods_id', 'img_name', 'img', 'img_height',
+              'img_width')
 
 
 class SelectedModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'img_id', 'img_name', 'img', 'img_height'
+    list_display = ('id', 'img_id', 'img_name', 'img', 'img_height',
                     'img_width')
     fields = ('img_id',  'img_name', 'img', 'img_height', 'img_width')
 
