@@ -4,9 +4,12 @@ from django.db import models
 class OrderModel(models.Model):
     user_id = models.ForeignKey('indexapp.models.UserModel',
                                 verbose_name='用户ID')
+
     total = models.FloatField(verbose_name='总价格')
+
     time = models.DateTimeField(auto_now=True,
                                 verbose_name='下单时间')
+
     address_id = models.ForeignKey('addressapp.models.addressModel',
                                      verbose_name='地址ID')
 
@@ -24,9 +27,13 @@ class OrderModel(models.Model):
 
 class OrderDetailModel(models.Model):
     order_id = models.ForeignKey(OrderModel,
-                                 verbose_name='订单ID')
+                                 verbose_name='订单ID',
+                                 on_delete=models.CASCADE)
+
     goods_id = models.ForeignKey('goodsapp.models.GoodsModel',
-                                 verbose_name='商品ID')
+                                 verbose_name='商品ID',
+                                 on_delete=models.CASCADE)
+
     count = models.IntegerField(verbose_name='商品数量')
     class Meta:
         db_table = 'app_orderdetail'

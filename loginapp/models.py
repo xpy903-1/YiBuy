@@ -45,6 +45,7 @@ class CitysModel(models.Model):
 class NavigationModel(models.Model):
     img = models.ImageField(verbose_name='导航图片',
                             upload_to='login/images')
+
     img_name = models.CharField(max_length=20,
                                 verbose_name='图片名称')
 
