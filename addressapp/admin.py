@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import AddressModel, DiscountModel
 
+
 # Register your models here.
 class AddressModelAdmin(admin.ModelAdmin):
     list_display = ('id', 'user_id', 'ads ', 'name', 'phone')
