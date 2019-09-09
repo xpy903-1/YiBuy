@@ -7,7 +7,7 @@ from .models import ShopCarModel, PictureModel
 # 购物车
 class ShopCarAdmin(admin.ModelAdmin):
     list_display = ('user_id', 'good_id', 'count', 'is_selected')  # 显示字段
-    fields = ('count', 'is_selected')  # 可更改字段
+    fields = ('user_id', 'good_id', 'count', 'is_selected')  # 可更改字段
     ordering = ('id',)  # 按 id 排序
 
 
