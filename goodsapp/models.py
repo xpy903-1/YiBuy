@@ -1,13 +1,29 @@
+import uuid
+
 from django.db import models
 
 # Create your models here.
 
 class FirstClassify(models.Model):
+    uid = models.UUIDField(verbose_name='一级分类id',
+                           primary_key=True)
+
     name = models.CharField(verbose_name='一级分类名',
                             max_length=20)
 
     def __str__(self):
         return self.name
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+
+        self.uid = uuid.uuid4().hex
+
+        super().save()
+
+
+
+
 
     class Meta:
         db_table = 't_first_classcify'
@@ -15,8 +31,17 @@ class FirstClassify(models.Model):
 
 
 class SecondClassify(models.Model):
+    uid = models.UUIDField(verbose_name='二级分类id',
+                           primary_key=True)
+
     name = models.CharField(verbose_name='二级分类名',
                             max_length=20)
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.uid = uuid.uuid4().hex
+
+        super().save()
 
     def __str__(self):
         return self.name
@@ -26,6 +51,9 @@ class SecondClassify(models.Model):
         verbose_name_pural = verbose_name = '二级分类表'
 
 class GoodsModel(models.Model):
+    uid = models.UUIDField(verbose_name='水果id',
+                           primary_key=True)
+
     goods_img = models.ImageField(verbose_name='商品图片',
                                    upload_to='imags',
                                    width_field='goods_img_width',
@@ -90,7 +118,11 @@ class GoodsModel(models.Model):
     update_time = models.DateTimeField(verbose_name='更新时间',
                                        auto_now=True)
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.uid = uuid.uuid4().hex
 
+        super().save()
 
     def __str__(self):
         return self.name
