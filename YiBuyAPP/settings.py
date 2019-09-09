@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'loginapp',
     'loginapp2',
     'shopcartapp',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
