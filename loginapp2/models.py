@@ -1,15 +1,21 @@
+import uuid
+
 from django.db import models
 
 
 # Create your models here.
 # 创建一个抽象模型类
 class BaseModel(models.Model):
-    img = models.ImageField(verbose_name="图片",
-                            upload_to="loginapp2")
-    img_id = models.CharField(max_length=20,
-                              verbose_name="图片ID")
-    img_name = models.CharField(max_length=100,
-                                verbose_name="图片名称")
+    id = models.UUIDField(primary_key=True)
+    img_id = models.ForeignKey('shopcartapp.models.PictureModel',
+                               on_delete=models.CASCADE)
+
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if self.id:
+            self.id = uuid.uuid4().hex
+
 
     class Meta:
         abstract = True
@@ -17,10 +23,11 @@ class BaseModel(models.Model):
 
 class NavigationDetaiModel(BaseModel):
     goods_id = models.ForeignKey('goodsapp.models.GoodsModel',
-                                 verbose_name="商品ID")
+                                 verbose_name="商品ID",
+                                 on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.img_name
+        return self.img_id.picture_name
 
     class Meta:
         db_table = "app_navigationdetai"
@@ -28,8 +35,9 @@ class NavigationDetaiModel(BaseModel):
 
 
 class SelectedModel(BaseModel):
+
     def __str__(self):
-        return self.img_name
+        return self.img_id.picture_name
 
     class Meta:
         db_table = "app_selected"
@@ -37,11 +45,13 @@ class SelectedModel(BaseModel):
 
 
 class CarsouseiMapModel(BaseModel):
+
     goods_id = models.ForeignKey("goodsapp.models.GoodsModel",
-                                 verbose_name="商品ID")
+                                 verbose_name="商品ID",
+                                 on_delete=True)
 
     def __str__(self):
-        return self.img_name
+        return self.img_id.picture_name
 
     class Meta:
         db_table = "app_carsouseimap"
