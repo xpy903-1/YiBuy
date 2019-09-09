@@ -14,12 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf.urls.static import static
 
 from YiBuyAPP import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('goods', include('goodsapp.urls.py')),
+    path('index', include('indexapp.urls.py')),
+    path('login', include('loginapp.urls.py')),
+    path('login2', include('loginapp2.urls.py')),
+    path('order', include('orderapp.urls.py')),
+    path('shopcart', include('shopcartapp.urls.py')),
+    path('address', include('addressapp.urls.py')),
 ]+static(settings.MEDIA_URL,
          document_root=settings.MEDIA_ROOT)
