@@ -38,7 +38,7 @@ class SecClassify(models.Model):
                              max_length=20)
 
     def __str__(self):
-        return self.name
+        return str(self.uid)
 
 
 
@@ -61,18 +61,12 @@ class GoodsModel(models.Model):
     uid = models.UUIDField(verbose_name='水果id',
                            primary_key=True)
 
-    goods_img = models.ImageField(verbose_name='商品图片',
-                                   upload_to='imags',
-                                   width_field='goods_img_width',
-                                   height_field='goods_img_height',
+    goods_img = models.CharField(verbose_name='商品图片',
+                                   max_length=200,
                                    null=True,
-                                   blank=True)
+                                   )
 
-    goods_img_width = models.IntegerField(verbose_name='宽',
-                                           null=True)
 
-    goods_img_height = models.IntegerField(verbose_name='高',
-                                            null=True)
 
     name = models.CharField(verbose_name='水果名',
                             max_length=20)
@@ -92,18 +86,12 @@ class GoodsModel(models.Model):
     produce_place = models.CharField(verbose_name='生产地',
                                      max_length=20)
 
-    detail_img = models.ImageField(verbose_name='详情页图片',
-                                   upload_to='imags',
-                                   width_field='detail_img_width',
-                                   height_field='detail_img_height',
+    detail_img = models.CharField(verbose_name='详情页图片',
+                                   max_length=200,
                                    null=True,
-                                   blank=True)
+                                   )
 
-    detail_img_width = models.IntegerField(verbose_name='宽',
-                                      null=True)
 
-    detail_img_height = models.IntegerField(verbose_name='高',
-                                       null=True)
 
     cate_id = models.ForeignKey(SecClassify,
                                       on_delete=models.CASCADE,
