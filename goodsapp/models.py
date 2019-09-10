@@ -19,7 +19,8 @@ class FirstClassify(models.Model):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         # self.uid1 = uuid.uuid4().hex
-        self.uid = uuid.uuid4().hex
+        if not self.uid:
+            self.uid = uuid.uuid4().hex
 
         super().save()
 
@@ -48,9 +49,9 @@ class SecClassify(models.Model):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
 
-        # self.uid1 = uuid.uuid4().hex
+        if not self.uid1:
 
-        self.uid1 = uuid.uuid4().hex
+            self.uid1 = uuid.uuid4().hex
 
         super().save()
 
@@ -116,7 +117,8 @@ class GoodsModel(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        self.uid = uuid.uuid4().hex
+        if not self.uid:
+            self.uid = uuid.uuid4().hex
 
         super().save()
 
