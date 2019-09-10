@@ -2,6 +2,7 @@ from django.http import JsonResponse,  response
 from django.shortcuts import render
 
 # Create your views here.
+from indexapp.models import UserModel
 
 
 def detaios(request):
@@ -23,11 +24,23 @@ def detaios(request):
 
 
 def change(request):
+    user_name = request.POST.get('user_name',None)
     user_phone = request.POST.get('user_phone', None)
     user_pwd = request.POST.get('user_pwd', None)
-    user_img1 = request.POST.get('user_img1', None)
-    if not all((user_img1, user_phone, user_pwd),):
-        pass
+    user_img1 = request.FILES.get('user_img1', None)
+    if user_img1:
+        if all((user_img1.content_type.startswith('image/'),
+                user_img1.size < 50 * 1024)):
+            return
+    user = UserModel.objects.get(user_name == 'name')
+    if user:
+        user = user.fist()
+        if not all((user_img1, user_phone, user_pwd)):
+            user.phone = user_phone
+            user.pwd = user_pwd
+            user.img1 = user_img1
+
+            user.save()
 
 
 def loginout(request):
@@ -40,13 +53,15 @@ def loginout(request):
             })
         )
     else:
-        response.delete_cookie('token')
-        return JsonResponse(
+        request.session.clear()
+        resp = JsonResponse(
             ({
                 'code': 200,
                 'msg': '退出成功！'
             })
         )
+        resp.delete_cookie('token')
+        return resp
 
 def upload_avator(request):
     pass
