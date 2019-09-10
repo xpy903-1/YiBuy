@@ -6,7 +6,7 @@ from orderapp.models import OrderModel
 class OrderModelSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = OrderModel
-        fields = ('id', 'user_id', 'total', 'address_id', 'order_status')
+        fields = ('id', 'total', 'order_status')
 
 
 # API视图类
