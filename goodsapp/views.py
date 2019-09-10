@@ -1,7 +1,9 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 
 from .models import GoodsModel
 
+import json
+from goodsapp.models import SecClassify
 # Create your views here.
 
 
@@ -72,8 +74,8 @@ def goodsclassfiy(request):
                 "msg": "ok",
                 "type_detail_datas": [
                     {
-                        "category_id": good.cate_id.uid.uid,
-                        "category_name": good.cate_id.uid.name,
+                        "category_id": good.cate_id.uid2.uid,
+                        "category_name": good.cate_id.uid2.name,
                         "id": 1
     },
             ],
@@ -85,3 +87,26 @@ def goodsclassfiy(request):
     else:
         data = {'code': 404, 'msg': 'not found'}
         return JsonResponse(data=data)
+
+def adddata(request):
+
+
+    with open('data.json', 'r', encoding='utf-8') as f:
+        r = json.load(f)
+        for f in r:
+            for i in f['Data']['CommodityList']:
+                SecClassify.objects.get(pk='1eac57c4-59b4-4269-b018-6d2748f2e70a').goods.create(
+                    goods_img=i['SmallPic'],
+                    name=i['CommodityName'],
+                    goods_price=i['OriginalPrice'],
+                    sales_volume=i['MaxLimitCount'],
+                    storage=100,
+                    market_price=i['SellPrice'],
+                    produce_place='西安',
+                    detail_img=i['SmallPic'],
+                    description=i['SubTitle'],
+                    detail=i['SubTitle'],
+                    is_selected=i['CanAddToCart']
+                )
+
+    return HttpResponse('ok')

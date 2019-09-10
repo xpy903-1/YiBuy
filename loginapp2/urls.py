@@ -10,4 +10,6 @@ urlpatterns = [
     path('loginout/', loginout, name="loginout"),
     path('imgurl/', img_url, name="img_url"),
 
+
+
 ]
