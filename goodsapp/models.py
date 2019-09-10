@@ -29,8 +29,11 @@ class FirstClassify(models.Model):
 
 
 class SecClassify(models.Model):
-    uid = models.ForeignKey(FirstClassify,
-                             verbose_name='二级分类id',
+    uid1 = models.UUIDField(primary_key=True,
+                             verbose_name='二级分类id')
+
+    uid2 = models.ForeignKey(FirstClassify,
+                             verbose_name='所属一级分类',
                              on_delete=models.CASCADE,
                              )
 
@@ -38,7 +41,7 @@ class SecClassify(models.Model):
                              max_length=20)
 
     def __str__(self):
-        return str(self.uid)
+        return str(self.uid2)
 
 
 
@@ -46,8 +49,8 @@ class SecClassify(models.Model):
              update_fields=None):
 
         # self.uid1 = uuid.uuid4().hex
-        if not self.uid:
-            self.uid = uuid.uuid4().hex
+
+        self.uid1 = uuid.uuid4().hex
 
         super().save()
 

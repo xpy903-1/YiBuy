@@ -9,8 +9,8 @@ class FirstClassifyAdmin(admin.ModelAdmin):
     fields = ('name',)
 
 class SecClassifyAdmin(admin.ModelAdmin):
-    list_display = ('uid', 'name')
-    fields = ('name', 'uid')
+    list_display = ('uid1', 'uid2', 'name')
+    fields = ('name', 'uid2')
 
 class GoodsModelAdmin(admin.ModelAdmin):
     list_display = ('uid', 'goods_img',
