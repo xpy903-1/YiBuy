@@ -22,11 +22,8 @@ from api import api_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     path('api/', include(api_router.urls)),
-
     path('goods/', include('goodsapp.urls')),
-
     path('index/', include('indexapp.urls')),
     path('login/', include('loginapp.urls')),
     path('login2/', include('loginapp2.urls')),
