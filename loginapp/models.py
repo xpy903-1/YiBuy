@@ -66,6 +66,7 @@ class NavigationModel(models.Model):
 
     img_id = models.ForeignKey(NavigationDetaiModel,
                                verbose_name='图片编号',
+                               related_name='navs',
                                on_delete=models.CASCADE)
 
     def __str__(self):

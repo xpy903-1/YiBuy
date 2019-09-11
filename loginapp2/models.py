@@ -5,7 +5,6 @@ from django.db import models
 # Create your models here.
 # 创建一个抽象模型类
 from goodsapp.models import GoodsModel
-from loginapp.models import NavigationModel
 from shopcartapp.models import PictureModel
 
 
@@ -43,10 +42,6 @@ class NavigationDetaiModel(BaseModel):
                                  related_name="goods",
                                  verbose_name="商品ID",
                                  on_delete=models.CASCADE)
-    nav_id = models.ForeignKey(NavigationModel,
-                               related_name="navs",
-                               verbose_name="导航ID",
-                               on_delete=models.CASCADE)
 
     def __str__(self):
         return self.img_name
