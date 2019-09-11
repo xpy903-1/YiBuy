@@ -1,8 +1,11 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
-from goodsapp.models import SecClassify, FirstClassify
+from addressapp.models import AddressModel
+from goodsapp.models import SecClassify, FirstClassify, GoodsModel
+from indexapp.models import UserModel
+from orderapp.models import OrderModel
 
 
 def daohang(request, child_id, id):
@@ -47,5 +50,38 @@ def feilei(request, category_id):
         'msg': 'ok'
     })
 
-def order(request, addr_id, goods_id, goods_cnts):
-    pass
+def order(request):
+    token = request.COOKIES.get('token')
+    uid = UserModel.objects.get(pk=request.session[token])
+    addr_id = AddressModel.objects.get(pk=request.POST.get('addr_id'))
+    goods_id = GoodsModel.objects.get(pk=request.POST.get('goods_id'))
+    goods_cnts = int(request.POST.get('goods_cents'))
+    new_order = OrderModel.objects.create(
+        count=goods_cnts,
+        address_id=addr_id,
+        goods_id=goods_id,
+        user_id=uid,
+        order_status=1
+    )
+    return JsonResponse({
+        'code':200,
+        'order_id':new_order.id,
+        'total_price':new_order.total,
+
+    })
+    
+def order_test(request):
+    a = AddressModel.objects.get(pk='5f630ecc-ef56-4066-90e3-eed3b01150fe')
+    g = GoodsModel.objects.get(pk='ffcc0908-cb01-4311-bfaa-651bff372982')
+    u = UserModel.objects.get(pk='8370030c-a3ef-4ff3-8c8b-7005e680120a')
+    print(a, '*'*100)
+    print(g, '*'*100)
+    print(u, '*'*100)
+    OrderModel.objects.create(
+        count=10,
+        address_id=a,
+        goods_id=g,
+        user_id=u,
+        order_status=1
+    )
+    return HttpResponse('ok')
