@@ -1,0 +1,36 @@
+{
+  "user": {
+    "id": 10001,
+    "name": "Tom",
+    "money": 9000
+  },
+  "cart":[
+    {
+      "goods": {
+        "id": 108,
+        "name": "iphone 4s",
+        "price": 1700,
+        "img": ""
+      },
+      "cnt":10
+    },
+    {
+      "goods": {
+        "id": 103,
+        "name": "华为P9",
+        "price": 4700,
+        "img": ""
+      },
+      "cnt":3
+    },
+    {
+      "goods": {
+        "id": 101,
+        "name": "Mac Pro 13",
+        "price": 11000,
+        "img": ""
+      },
+      "cnt":1
+    }
+  ]
+}
