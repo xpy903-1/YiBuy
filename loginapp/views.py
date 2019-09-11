@@ -55,6 +55,7 @@ def login_pwd(request):
         return render(request, 'login.html')
     phone = request.POST.get('u_phone', None)
     pwd = request.POST.get('auth_string', None)
+    print(phone)
 
     user = UserModel.objects.filter(phone=phone)
 
