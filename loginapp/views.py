@@ -31,7 +31,7 @@ def msg_code(request):
         })
 
 
-# 检车手机号
+# 检查手机号
 def check_phone(request):
     phone = request.GET.get('phone')
     u_phone = UserModel.objects.filter(phone=phone)
