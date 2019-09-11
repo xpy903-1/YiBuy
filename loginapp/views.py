@@ -38,6 +38,9 @@ def login_pwd(request):
     data = request.body
     phone = data.get('u_phone', None)
     pwd = data.get('auth_string', None)
+    phone = request.POST.get('u_phone', None)
+    pwd = request.POST.get('auth_string', None)
+    print(phone)
 
     phone = UserModel.objects.filter(phone=phone).first()
 
@@ -55,6 +58,8 @@ def login_pwd(request):
             })
             response.set_cookie('token', token, expires=60 * 10)
             request.session['token'] = phone.id
+            response.set_cookie('token', token, expires=60*10)
+            request.session[token] = phone.id
             return response
     else:
         return JsonResponse({

@@ -8,7 +8,7 @@ app_name = 'goodsapp'
 urlpatterns = [
     path('detail/<uid>', query_goods_info),
     path('queryimg/img/<uid>', query_goods_img),
-    path('type/list/<fuid>', goodsclassfiy),
+    path('type/list/', goodsclassfiy),
     path('search/', search),
 
 ]

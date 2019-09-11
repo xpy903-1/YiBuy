@@ -61,30 +61,35 @@ def query_goods_img(request, uid):
         data = {'code': 404, 'msg': 'not found'}
         return JsonResponse(data=data)
 
-def goodsclassfiy(request, fuid):
-    fcms = FirstClassify.objects.filter(uid=fuid)
-    if fcms:
-        fcm = fcms.first().uid
-        secs = SecClassify.objects.filter(uid2=fcm)
+def goodsclassfiy(request):
+    fcms_list = []
+    fcms = FirstClassify.objects.all()
+    for fcm in fcms:
+        secs = SecClassify.objects.filter(uid2=fcm.uid.hex)
         if secs:
             secs = secs.all()
-            data_list = []
+            secs_list = []
             for sec in secs:
-                data_dict = {
-                    'child_id': sec.uid1.hex,
-                    'child_name':sec.name
-                }
-                data_list.append(data_dict)
 
-            data = {
+                sec_dict = {
+                    'child_id': sec.uid1.hex,
+                    'child_name': sec.name
+                }
+                secs_list.append(sec_dict)
+
+        fcms_dict = {
+            'category_id': fcm.uid.hex,
+            'name': fcm.name,
+            'child_info': secs_list
+            }
+        fcms_list.append(fcms_dict)
+
+        data = {
                 'code': 200,
                 'msg': 'ok',
-                'child_info': data_list
+                'data': fcms_list
             }
 
-            return JsonResponse(data=data)
-
-    data = {'code': 404, 'msg': 'not found'}
     return JsonResponse(data=data)
 
 def search(request):
