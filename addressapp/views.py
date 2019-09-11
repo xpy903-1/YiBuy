@@ -62,13 +62,7 @@ def address_query(request):
 
 @csrf_exempt
 def address_add(request):
-<<<<<<< HEAD
-    # if not login_yz.send(sender='delete_addr', request=request)[0][1]:
-    #     return HttpResponse('请先登录')
-=======
-    if not login_yz.send(sender='delete_addr', request=request)[0][1]:
-        return HttpResponse('请先登录')
->>>>>>> 2e17d2d6a3d921d5b471c105993bd4cd3d5e1ef8
+
     if request.method == 'POST':
         user_id = UserModel.objects.get(pk=request.POST.get('user_id', None))
         name = request.POST.get('name', None)
