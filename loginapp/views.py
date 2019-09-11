@@ -35,11 +35,11 @@ def check_phone(request):
 def login_pwd(request):
     if request.method == 'GET':
         return render(request, 'login.html')
+    print(request.data)
     data = request.body
+
     phone = data.get('u_phone', None)
     pwd = data.get('auth_string', None)
-    phone = request.POST.get('u_phone', None)
-    pwd = request.POST.get('auth_string', None)
     print(phone)
 
     phone = UserModel.objects.filter(phone=phone).first()
