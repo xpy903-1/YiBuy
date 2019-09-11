@@ -49,6 +49,7 @@ def check_phone(request):
 
 
 # 密码登录
+@csrf_exempt
 def login_pwd(request):
     if request.method == 'GET':
         return render(request, 'login1.html')
