@@ -46,3 +46,6 @@ def feilei(request, category_id):
         'data_wheel': b,
         'msg': 'ok'
     })
+
+def order(request, addr_id, goods_id, goods_cnts):
+    pass
