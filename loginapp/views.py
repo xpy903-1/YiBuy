@@ -34,9 +34,9 @@ def msg_code(request):
 # 检查手机号
 def check_phone(request):
     phone = request.GET.get('phone')
-    u_phone = UserModel.objects.filter(phone=phone)
+    user = UserModel.objects.filter(phone=phone)
 
-    if not u_phone:
+    if not user:
         return JsonResponse({
             'code': 200,
             'msg': '手机号不存在'
@@ -52,15 +52,15 @@ def check_phone(request):
 @csrf_exempt
 def login_pwd(request):
     if request.method == 'GET':
-        return render(request, 'login1.html')
+        return render(request, 'login.html')
     phone = request.POST.get('u_phone', None)
     pwd = request.POST.get('auth_string', None)
 
-    phone = UserModel.objects.filter(phone=phone)
+    user = UserModel.objects.filter(phone=phone)
 
-    if phone:
-        phone = phone.first()
-        if pwd != phone.pwd:
+    if user:
+        user = user.first()
+        if pwd != user.pwd:
             return JsonResponse({
                 "code": 303,
                 "msg": "用户口令不正确"
@@ -69,10 +69,10 @@ def login_pwd(request):
             token = uuid.uuid4().hex
             response = JsonResponse({
                 'code':200,
-                'msg':'成功'
+                'msg':'登录成功'
             })
             response.set_cookie('token', token, expires=60*10)
-            request.session['token'] = phone.id
+            request.session['token'] = user.id
             return response
     else:
         return JsonResponse({
@@ -85,13 +85,11 @@ def login_pwd(request):
 def msg_login(request):
     phone = request.POST.get('u_phone', None)
     code = request.POST.get('msg_code', None)
-    # 生成token
-    token = uuid.uuid4().hex
     # 保存在session
     request.session['phone'] = phone
     request.session['code'] = code
 
-    user_data = UserModel.objects.all()
+    user = UserModel.objects.filter(phone=phone)
 
     data = {
         "balance": '',
