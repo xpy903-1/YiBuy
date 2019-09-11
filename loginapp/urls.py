@@ -9,6 +9,6 @@ urlpatterns = [
      path('check/', check_phone, name='check'),
      path('login/', login_pwd, name='login'),
      path('msglogin/', msg_login, name='msglogin'),
-     path('forgot/', forgot, msg='forgot')
+     path('forgot/', forgot, name='forgot')
 ]
 
