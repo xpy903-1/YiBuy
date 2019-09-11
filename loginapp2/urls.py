@@ -10,13 +10,10 @@ app_name = "loginapp2"
 
 urlpatterns = [
 
-
-
     path('detaios/', detaios, name="detaios"),
     path('change/', change, name="change"),
     path('loginout/', loginout, name="loginout"),
     path('upload/', upload_avator, name="upload"),
     path('imgurl/<str:user_id>', u_img, name="u_img"),
-
 
 ]

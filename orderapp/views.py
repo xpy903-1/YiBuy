@@ -6,6 +6,7 @@ from addressapp.models import AddressModel
 from goodsapp.models import SecClassify, FirstClassify, GoodsModel
 from indexapp.models import UserModel
 from orderapp.models import OrderModel
+from signal import login_yz
 
 
 def daohang(request, child_id, id):
@@ -71,12 +72,14 @@ def order(request):
     })
     
 def order_test(request):
+    if not login_yz.send(sender='seven', request=request)[0][1]:
+        return HttpResponse('请先登录')
     a = AddressModel.objects.get(pk='5f630ecc-ef56-4066-90e3-eed3b01150fe')
     g = GoodsModel.objects.get(pk='ffcc0908-cb01-4311-bfaa-651bff372982')
     u = UserModel.objects.get(pk='8370030c-a3ef-4ff3-8c8b-7005e680120a')
-    print(a, '*'*100)
-    print(g, '*'*100)
-    print(u, '*'*100)
+    # print(a, '*'*100)
+    # print(g, '*'*100)
+    # print(u, '*'*100)
     OrderModel.objects.create(
         count=10,
         address_id=a,

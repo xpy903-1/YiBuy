@@ -1,3 +1,5 @@
+import uuid
+
 from django.core.cache import cache
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -12,12 +14,16 @@ from django.views.decorators.csrf import csrf_exempt
 # 短信返回
 def msg_code(request):
     phone = request.POST.get('phone')
-    u_phone = UserModel.objects.filter(phone=phone)
 
 
-    if u_phone:
+
+
+    user = UserModel.objects.filter(phone=phone)
+
+
+    if user:
         # 手机号保存在session
-        request.session['phone'] = u_phone
+        request.session['phone'] = user
 
         return JsonResponse({
             'code': 200,
@@ -30,10 +36,11 @@ def msg_code(request):
         })
 
 
-# 检车手机号
+# 检查手机号
 def check_phone(request):
     phone = request.GET.get('phone')
     user = UserModel.objects.filter(phone=phone)
+
     if not user:
         return JsonResponse({
             'code': 200,
@@ -47,19 +54,31 @@ def check_phone(request):
 
 
 # 密码登录
+@csrf_exempt
 def login_pwd(request):
+    if request.method == 'GET':
+        return render(request, 'login.html')
     phone = request.POST.get('u_phone', None)
     pwd = request.POST.get('auth_string', None)
 
-    phone = UserModel.objects.filter(phone=phone)
+    user = UserModel.objects.filter(phone=phone)
 
-    if phone:
-        phone = phone.first()
-        if pwd != phone.pwd:
+    if user:
+        user = user.first()
+        if pwd != user.pwd:
             return JsonResponse({
-                "code": "303",
+                "code": 303,
                 "msg": "用户口令不正确"
             })
+        else:
+            token = uuid.uuid4().hex
+            response = JsonResponse({
+                'code':200,
+                'msg':'登录成功'
+            })
+            response.set_cookie('token', token, expires=60*10)
+            request.session['token'] = user.id
+            return response
     else:
         return JsonResponse({
             'code': 304,
@@ -71,61 +90,30 @@ def login_pwd(request):
 def msg_login(request):
     phone = request.POST.get('u_phone', None)
     code = request.POST.get('msg_code', None)
-
+    # 保存在session
     request.session['phone'] = phone
     request.session['code'] = code
 
-    cache.set(phone, code)
+    user = UserModel.objects.filter(phone=phone)
 
-    return JsonResponse({
-        "code": 200,
-        "token": "b8735a654d1442cf9025bf2b14e2a309",
-        "user_data": {
-            "balance": '',
-            "gender": '',
-            "id": 1,
-            "idcard": '',
-            "img": '',
-            "is_active": 1,
-            "is_delete": 0,
-            "nickname": "YG18991708565",
-            "u_auth_string": "123456",
-            "u_level": '',
-            "u_phone": "18991708565"
-        }
-    })
+    data = {
+        "balance": '',
+        "gender": '',
+        "id": 1,
+        "idcard": '',
+        "img": user_data.img1,
+        "is_active": user_data.is_life,
+        "is_delete": 0,
+        "nickname": "YG18991708565",
+        "u_auth_string": "123456",
+        "u_level": '',
+        "u_phone": "18991708565"
+    }
 
 
 # 忘记密码
 def forgot(request):
-    return JsonResponse({
-        "code": 200,
-        "token": "8a72951e4cee4715a5667ead5566af57",
-        "user_data": {
-            "balance": '',
-            "gender": '',
-            "id": 1,
-            "idcard": '',
-            "img": '',
-            "is_active": 1,
-            "is_delete": 0,
-            "nickname": "YG18991708565",
-            "u_auth_string": "123456",
-            "u_level": '',
-            "u_phone": "18991708565"
-        }
-    })
+    return render(request, '', locals())
 
 
-def add_city(request):
-    with open('city.json', 'r', encoding='utf-8') as f:
-        city_dict = json.load(f)
-        for i in city_dict['Data']['CityList']:
-            for r in i['CityList']:
-                CitysModel.objects.create(
-                    name=r['AreaName'],
-                    start_str=r['FirstLetter'],
-                    is_popular=True
-                )
 
-    return HttpResponse('ok')
