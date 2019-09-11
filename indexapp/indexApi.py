@@ -31,21 +31,52 @@ def home_page(request):
         data = {
             "id": lei.uid1,
             "img": lei.img,
+            "name": lei.name,
             "listimg": list
         }
         list1.append(data)
+    wheel_pics = CarsouseiMapModel.objects.all()
+    wheel_pic_list = []
+    for wheel_pic in wheel_pics:
+        pic = {
+            "id": wheel_pic.id,
+            "img": str(wheel_pic.img1),
+            "name": wheel_pic.img_name,
+        }
+        wheel_pic_list.append(pic)
     nav_pics = NavigationDetaiModel.objects.all()
+    nav_pic_list = []
+    nav_good_list = []
+    for nav_pic in nav_pics:
+        nav_good = nav_pic.goods_id
+        goods = {
+            "detail_name": nav_good.detail,
+            "goods_img": str(nav_good.goods_img),
+            "id": nav_good.uid,
+            "marketprice": nav_good.goods_price,
+            "name": nav_good.name,
+            "price": nav_good.market_price
+        }
+        nav_good_list.append(goods)
+        data = {
+            "nav_name": nav_pic.img_name,
+            "nav_img": str(nav_pic.img1),
+            "goods_img": nav_good_list
+        }
+        nav_pic_list.append(data)
     return JsonResponse({
         "code": 8000,
-        "data_chosen": list1,
-
+        "data_wheel": wheel_pic_list,
+        "data_nav": nav_pic_list,
+        "img_chosen_otherdata": list1,
+        "msg": "ok"
     })
 
 
 def navigation(request):
     nav_pics = NavigationDetaiModel.objects.all()
-    list2 = []
-    list1 = []
+    nav_pic_list = []
+    nav_good_list = []
     for nav_pic in nav_pics:
         nav_good = nav_pic.goods_id
         goods = {
@@ -56,16 +87,16 @@ def navigation(request):
             "name": nav_good.name,
             "price": nav_good.market_price
         }
-        list1.append(goods)
+        nav_good_list.append(goods)
         data = {
             "nav_name": nav_pic.img_name,
             "nav_img": str(nav_pic.img1),
-            "goods_img": list1
+            "goods_img": nav_good_list
         }
-        list2.append(data)
+        nav_pic_list.append(data)
     return JsonResponse({
         "code": 8000,
-        "data_nav": list2,
+        "data_nav": nav_pic_list,
         "msg": "ok"
     })
 
@@ -125,14 +156,15 @@ def page_welfare(request):
     goods_list = GoodsModel.objects.all()
     list = []
     for i in goods_list:
-        data = {
-            "detail_name": i.detail,
-            "goods_img": i.goods_img,
-            "id": i.uid,
-            "name": i.name,
-            "price": i.goods_price
-        }
-        list.append(data)
+        if i.is_selected:
+            data = {
+                "detail_name": i.detail,
+                "goods_img": i.goods_img,
+                "id": i.uid,
+                "name": i.name,
+                "price": i.goods_price
+            }
+            list.append(data)
     return JsonResponse({
         "code": 200,
         "datas1": list,
