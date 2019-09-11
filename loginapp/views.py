@@ -32,6 +32,7 @@ def check_phone(request):
 def login_pwd(request):
     if request.method == 'GET':
         return render(request, 'login.html')
+
     phone = request.POST.get('u_phone', None)
     pwd = request.POST.get('auth_string', None)
 
