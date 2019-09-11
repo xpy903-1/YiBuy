@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import add_city, msg_code, check_phone, login_pwd, msg_login, forgot
+from .views import msg_code, add_city, check_phone, login_pwd, msg_login, forgot
 
 app_name = 'loginapp'
 
