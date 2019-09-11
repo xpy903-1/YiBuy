@@ -4,11 +4,11 @@ def login_yz_fun(sender, **kwargs):
     token = request.COOKIES.get('token')
     print(token)
     if token:
-        uid = request.session[token]
-        print(not uid)
+        uid = request.session.get(token,None)
+        print(uid)
         if not uid:
             return False
         else:
-            return True
+            return uid
     else:
         return False

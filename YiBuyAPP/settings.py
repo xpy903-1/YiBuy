@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'middleware.ckeck_goods.CheckGoodsMiddleware',
+    # 'middleware.ckeck_goods.CheckGoodsMiddleware',
 ]
 
 ROOT_URLCONF = 'YiBuyAPP.urls'

@@ -77,7 +77,7 @@ def login_pwd(request):
                 'msg':'登录成功'
             })
             response.set_cookie('token', token, expires=60*10)
-            request.session['token'] = phone.id
+            request.session[token] = phone.id
             return response
     else:
         return JsonResponse({
