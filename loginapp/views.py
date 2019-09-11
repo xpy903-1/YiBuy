@@ -1,3 +1,5 @@
+import uuid
+
 from django.core.cache import cache
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -13,7 +15,6 @@ from django.views.decorators.csrf import csrf_exempt
 def msg_code(request):
     phone = request.POST.get('phone')
     u_phone = UserModel.objects.filter(phone=phone)
-    print(u_phone)
 
     if u_phone:
         # 手机号保存在session
@@ -33,8 +34,9 @@ def msg_code(request):
 # 检车手机号
 def check_phone(request):
     phone = request.GET.get('phone')
-    user = UserModel.objects.filter(phone=phone)
-    if not user:
+    u_phone = UserModel.objects.filter(phone=phone)
+
+    if not u_phone:
         return JsonResponse({
             'code': 200,
             'msg': '手机号不存在'
@@ -71,15 +73,16 @@ def login_pwd(request):
 def msg_login(request):
     phone = request.POST.get('u_phone', None)
     code = request.POST.get('msg_code', None)
+    # 生成token
+    token = uuid.uuid4().hex
 
     request.session['phone'] = phone
     request.session['code'] = code
 
     cache.set(phone, code)
 
-    return JsonResponse({
+    return JsonResponse(token, {
         "code": 200,
-        "token": "b8735a654d1442cf9025bf2b14e2a309",
         "user_data": {
             "balance": '',
             "gender": '',
@@ -98,9 +101,12 @@ def msg_login(request):
 
 # 忘记密码
 def forgot(request):
-    return JsonResponse({
+
+    # 生成token
+    token = uuid.uuid4().hex
+
+    return JsonResponse(token, {
         "code": 200,
-        "token": "8a72951e4cee4715a5667ead5566af57",
         "user_data": {
             "balance": '',
             "gender": '',
