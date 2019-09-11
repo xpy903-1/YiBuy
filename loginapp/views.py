@@ -14,7 +14,12 @@ from django.views.decorators.csrf import csrf_exempt
 # 短信返回
 def msg_code(request):
     phone = request.POST.get('phone')
+
+
+
+
     user = UserModel.objects.filter(phone=phone)
+
 
     if user:
         # 手机号保存在session

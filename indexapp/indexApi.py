@@ -34,11 +34,19 @@ def home_page(request):
             "listimg": list
         }
         list1.append(data)
-    nav_pics = NavigationDetaiModel.objects.all()
+    wheel_pic = CarsouseiMapModel.objects.all().first()
+    wheel_pic_list = []
+    pic = {
+        "id": wheel_pic.id,
+        "img": str(wheel_pic.img1),
+        "name": wheel_pic.img_name,
+    }
+    wheel_pic_list.append(pic)
     return JsonResponse({
         "code": 8000,
-        "data_chosen": list1,
-
+        "data_nav": list1,
+        "data_wheel": wheel_pic_list,
+        "msg": "ok"
     })
 
 

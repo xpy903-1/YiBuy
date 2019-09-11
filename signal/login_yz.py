@@ -8,6 +8,6 @@ def login_yz_fun(sender, **kwargs):
         if not uid:
             return False
         else:
-            return uid
+            return True
     else:
         return False

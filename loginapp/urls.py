@@ -1,5 +1,7 @@
 from django.urls import path
+
 from .views import msg_code, check_phone, login_pwd, msg_login, forgot
+
 
 app_name = 'loginapp'
 

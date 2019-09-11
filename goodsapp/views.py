@@ -1,26 +1,26 @@
 from django.db.models import Q
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 
-from .models import GoodsModel
+from .models import GoodsModel, SecClassify, FirstClassify
 
-import json
-from goodsapp.models import SecClassify
+
 # Create your views here.
 
 
 
 def query_goods_info(request, uid):
-
     goods = GoodsModel.objects.filter(uid=uid)
     if goods:
         good = goods.first()
+
         data = {
-            "code": 8000,
+            "code": 200,
             "data_wheel": [
                 {
-                    "child_id": good.uid,
+                    "goods_id": good.uid,
+                    "child_id":  good.cate_id.uid1,
                     "detail_name": good.detail,
-                    "cate_id": good.cate_id,
+                    "category_id": good.cate_id.uid2.uid,
                     "marketprice": good.market_price,
                     "name": good.name,
                     "price": good.goods_price,
@@ -30,64 +30,62 @@ def query_goods_info(request, uid):
             "msg": "ok"
         }
         return JsonResponse(data=data)
-        # return render(request, 'y.html', locals())
+
     else:
         data = {'code': 404, 'msg': 'not found'}
-        return JsonResponse(data=data)
 
-def query_goods_img(request):
-    goods_id = request.GET.get('uid')
-    goods = GoodsModel.objects.filter(uid=goods_id)
+        return JsonResponse(data)
+
+
+
+
+def query_goods_img(request, uid):
+    # goods_id = request.GET.get('uid')
+    goods = GoodsModel.objects.filter(uid=uid)
+
     if goods:
         good = goods.first()
         data = {
-            "code": 8000,
+            "code":200,
             "data_wheel": [
                 {
                     "detail_img_url": good.detail_img,
-                    "cate_id": good.cate_id
+                    "cate_id": good.cate_id.uid1
                 }
             ],
             "msg": "ok"
         }
         return JsonResponse(data=data)
-        # return render(request, 'y.html', locals())
+
     else:
         data = {'code': 404, 'msg': 'not found'}
         return JsonResponse(data=data)
 
-def goodsclassfiy(request, uid):
+def goodsclassfiy(request, fuid):
+    fcms = FirstClassify.objects.filter(uid=fuid)
+    if fcms:
+        fcm = fcms.first().uid
+        secs = SecClassify.objects.filter(uid2=fcm)
+        if secs:
+            secs = secs.all()
+            data_list = []
+            for sec in secs:
+                data_dict = {
+                    'child_id': sec.uid1.hex,
+                    'child_name':sec.name
+                }
+                data_list.append(data_dict)
 
-    goods = GoodsModel.objects.filter(cate_id=uid)
-    if goods:
-        good = goods.first()
-        data = {
+            data = {
+                'code': 200,
+                'msg': 'ok',
+                'child_info': data_list
+            }
 
-                "child_type_datas": [
-                    {
-                        "child_id": good.uid,
-                        "child_img": good.goods_img,
-                        "child_name": good.cate_id.name
-                    },
+            return JsonResponse(data=data)
 
-                ],
-                "code": 8000,
-                "msg": "ok",
-                "type_detail_datas": [
-                    {
-                        "category_id": good.cate_id.uid2.uid,
-                        "category_name": good.cate_id.uid2.name,
-                        "id": 1
-    },
-            ]
-
-        }
-        return JsonResponse(data=data)
-
-        # return render(request, 'y.html', locals())
-    else:
-        data = {'code': 404, 'msg': 'not found'}
-        return JsonResponse(data=data)
+    data = {'code': 404, 'msg': 'not found'}
+    return JsonResponse(data=data)
 
 def search(request):
     word = request.GET.get('word')
@@ -120,26 +118,3 @@ def search(request):
 
         return JsonResponse(data=data)
 
-
-def adddata(request):
-
-
-    with open('data.json', 'r', encoding='utf-8') as f:
-        r = json.load(f)
-        for f in r:
-            for i in f['Data']['CommodityList']:
-                SecClassify.objects.get(pk='1eac57c4-59b4-4269-b018-6d2748f2e70a').goods.create(
-                    goods_img=i['SmallPic'],
-                    name=i['CommodityName'],
-                    goods_price=i['OriginalPrice'],
-                    sales_volume=i['MaxLimitCount'],
-                    storage=100,
-                    market_price=i['SellPrice'],
-                    produce_place='西安',
-                    detail_img=i['SmallPic'],
-                    description=i['SubTitle'],
-                    detail=i['SubTitle'],
-                    is_selected=i['CanAddToCart']
-                )
-
-    return HttpResponse('ok')
