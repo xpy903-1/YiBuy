@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 
 from .models import GoodsModel
@@ -8,9 +9,9 @@ from goodsapp.models import SecClassify
 
 
 
-def query_goods_info(request):
-    goods_id = request.GET.get('uid')
-    goods = GoodsModel.objects.filter(uid=goods_id)
+def query_goods_info(request, uid):
+
+    goods = GoodsModel.objects.filter(uid=uid)
     if goods:
         good = goods.first()
         data = {
@@ -55,9 +56,9 @@ def query_goods_img(request):
         data = {'code': 404, 'msg': 'not found'}
         return JsonResponse(data=data)
 
-def goodsclassfiy(request):
-    # goods_id = request.GET.get('uid')
-    goods = GoodsModel.objects.filter(uid='ba2d93f5-3b25-4457-85ca-b933ad26d528')
+def goodsclassfiy(request, uid):
+
+    goods = GoodsModel.objects.filter(cate_id=uid)
     if goods:
         good = goods.first()
         data = {
@@ -78,8 +79,8 @@ def goodsclassfiy(request):
                         "category_name": good.cate_id.uid2.name,
                         "id": 1
     },
-            ],
-            "msg": "ok"
+            ]
+
         }
         return JsonResponse(data=data)
 
@@ -87,6 +88,38 @@ def goodsclassfiy(request):
     else:
         data = {'code': 404, 'msg': 'not found'}
         return JsonResponse(data=data)
+
+def search(request):
+    word = request.GET.get('word')
+    infos = GoodsModel.objects.all().filter(Q(name__contains=word)|Q(description__contains=word))
+    if infos:
+        data_list = []
+        for info in infos:
+            data_dict = {
+                "category_id": info.cate_id.uid2.uid,
+                "category_name": info.cate_id.uid2.name,
+                "child_id": info.cate_id.uid1,
+                "child_name": info.cate_id.name
+            }
+            data_list.append(data_dict)
+
+        data ={
+
+                "code": 200,
+                "data": {
+                    "code": 200,
+                    "datas": data_list,
+                    "total": len(data_list)
+                },
+                "msg": "ok"
+            }
+
+        return JsonResponse(data=data)
+    else:
+        data = {'code': 404, 'msg': 'not found'}
+
+        return JsonResponse(data=data)
+
 
 def adddata(request):
 
