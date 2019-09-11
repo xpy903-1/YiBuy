@@ -14,11 +14,11 @@ from django.views.decorators.csrf import csrf_exempt
 # 短信返回
 def msg_code(request):
     phone = request.POST.get('phone')
-    u_phone = UserModel.objects.filter(phone=phone)
+    user = UserModel.objects.filter(phone=phone)
 
-    if u_phone:
+    if user:
         # 手机号保存在session
-        request.session['phone'] = u_phone
+        request.session['phone'] = user
 
         return JsonResponse({
             'code': 200,
@@ -49,7 +49,10 @@ def check_phone(request):
 
 
 # 密码登录
+@csrf_exempt
 def login_pwd(request):
+    if request.method == 'GET':
+        return render(request, 'login1.html')
     phone = request.POST.get('u_phone', None)
     pwd = request.POST.get('auth_string', None)
 
@@ -59,9 +62,18 @@ def login_pwd(request):
         phone = phone.first()
         if pwd != phone.pwd:
             return JsonResponse({
-                "code": "303",
+                "code": 303,
                 "msg": "用户口令不正确"
             })
+        else:
+            token = uuid.uuid4().hex
+            response = JsonResponse({
+                'code':200,
+                'msg':'成功'
+            })
+            response.set_cookie('token', token, expires=60*10)
+            request.session['token'] = phone.id
+            return response
     else:
         return JsonResponse({
             'code': 304,
@@ -75,28 +87,25 @@ def msg_login(request):
     code = request.POST.get('msg_code', None)
     # 生成token
     token = uuid.uuid4().hex
-
+    # 保存在session
     request.session['phone'] = phone
     request.session['code'] = code
 
-    cache.set(phone, code)
+    user_data = UserModel.objects.all()
 
-    return JsonResponse(token, {
-        "code": 200,
-        "user_data": {
-            "balance": '',
-            "gender": '',
-            "id": 1,
-            "idcard": '',
-            "img": '',
-            "is_active": 1,
-            "is_delete": 0,
-            "nickname": "YG18991708565",
-            "u_auth_string": "123456",
-            "u_level": '',
-            "u_phone": "18991708565"
-        }
-    })
+    data = {
+        "balance": '',
+        "gender": '',
+        "id": 1,
+        "idcard": '',
+        "img": user_data.img1,
+        "is_active": user_data.is_life,
+        "is_delete": 0,
+        "nickname": "YG18991708565",
+        "u_auth_string": "123456",
+        "u_level": '',
+        "u_phone": "18991708565"
+    }
 
 
 # 忘记密码

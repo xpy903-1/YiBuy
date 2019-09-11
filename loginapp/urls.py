@@ -1,14 +1,16 @@
 from django.urls import path
-from .views import msg_code, add_city, check_phone, login_pwd, msg_login, forgot
+
+from .views import msg_code, check_phone, login_pwd, msg_login, forgot
+
 
 app_name = 'loginapp'
 
 urlpatterns = [
-     path('add', add_city),
-     path('msg_', msg_code),
-     path('check', check_phone),
-     path('login', login_pwd),
-     path('msg', msg_login),
-     path('forgot', forgot)
+     # path('add', add_city),
+     path('msgcode/', msg_code, name='msgcode'),
+     path('check/', check_phone, name='check'),
+     path('login/', login_pwd, name='login'),
+     path('msglogin/', msg_login, name='msglogin'),
+     path('forgot/', forgot, msg='forgot')
 ]
 
