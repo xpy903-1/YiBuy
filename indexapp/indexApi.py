@@ -44,23 +44,22 @@ def home_page(request):
 def index(request):
     nav_pics = NavigationDetaiModel.objects.all()
     list2 = []
+    list1 = []
     for nav_pic in nav_pics:
-        nav_goods = nav_pic.goodsmodel_set.all()
-        list11 = []
-        for i in nav_goods:
-            goods = {
-                "detail_name": i.detail,
-                "goods_img": str(i.goods_img),
-                "id": i.uid,
-                "marketprice": i.goods_price,
-                "name": i.name,
-                "price": i.market_price
-            }
-            list11.append(goods)
+        nav_good = nav_pic.goods_id
+        goods = {
+            "detail_name": nav_good.detail,
+            "goods_img": str(nav_good.goods_img),
+             "id": nav_good.uid,
+            "marketprice": nav_good.goods_price,
+            "name": nav_good.name,
+            "price": nav_good.market_price
+        }
+        list1.append(goods)
         data = {
             "nav_name": nav_pic.img_name,
-            "nav_img": nav_pic.img1,
-            "goods_img": list11
+            "nav_img": str(nav_pic.img1),
+            "goods_img": list1
         }
         list2.append(data)
 
