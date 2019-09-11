@@ -2,10 +2,8 @@ import uuid
 
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-import json
 
 from indexapp.models import UserModel
-from .models import CitysModel
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 
@@ -52,8 +50,6 @@ def login_pwd(request):
             })
             response.set_cookie('token', token, expires=60 * 10)
             request.session['token'] = phone.id
-            response.set_cookie('token', token, expires=60 * 10)
-            request.session[token] = phone.id
             return response
     else:
         return JsonResponse({

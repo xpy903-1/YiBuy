@@ -60,6 +60,7 @@ def order(request):
             'code':300,
             'msg':'请先登录'
         })
+    uid = UserModel.objects.get(pk=uid)
     addr_id = AddressModel.objects.get(pk=request.POST.get('addr_id'))
     goods_id = GoodsModel.objects.get(pk=request.POST.get('goods_id'))
     goods_cnts = int(request.POST.get('goods_cents'))
