@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'loginapp2',
     'shopcartapp',
     'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'YiBuyAPP.urls'
@@ -142,3 +145,33 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
 SESSION_COOKIE_NAME = 'qbuy_session_id'
 SESSION_COOKIE_AGE = 604800
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:63342',  # 允许跨域请求的协议、域名和端口
+)
+CORS_ORIGIN_ALLOW_ALL = True   # 允许所有的源， 与白名单相同。
+CORS_ALLOW_CREDENTIALS = True  # 启用Cookie
+
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+# 跨域允许的头部参数(可选)
+CORS_ALLOW_HEADERS = (
+    'XMLHttpRequest',
+    'X_FILENAME',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'Pragma',
+)
+
