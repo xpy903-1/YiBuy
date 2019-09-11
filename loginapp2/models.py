@@ -39,6 +39,7 @@ class BaseModel(models.Model):
 
 class NavigationDetaiModel(BaseModel):
     goods_id = models.ForeignKey(GoodsModel,
+                                 related_name="goods",
                                  verbose_name="商品ID",
                                  on_delete=models.CASCADE)
 
