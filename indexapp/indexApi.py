@@ -133,14 +133,15 @@ def page_welfare(request):
     goods_list = GoodsModel.objects.all()
     list = []
     for i in goods_list:
-        data = {
-            "detail_name": i.detail,
-            "goods_img": i.goods_img,
-            "id": i.uid,
-            "name": i.name,
-            "price": i.goods_price
-        }
-        list.append(data)
+        if i.is_selected:
+            data = {
+                "detail_name": i.detail,
+                "goods_img": i.goods_img,
+                "id": i.uid,
+                "name": i.name,
+                "price": i.goods_price
+            }
+            list.append(data)
     return JsonResponse({
         "code": 200,
         "datas1": list,
