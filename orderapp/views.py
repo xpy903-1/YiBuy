@@ -1,3 +1,5 @@
+import json
+
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 
@@ -52,8 +54,13 @@ def feilei(request, category_id):
     })
 
 def order(request):
-    token = request.COOKIES.get('token')
-    uid = UserModel.objects.get(pk=request.session[token])
+    uid = login_yz.send(sender='seven', request=request)[0][1]
+    if not uid:
+        return JsonResponse({
+            'code':300,
+            'msg':'请先登录'
+        })
+    uid = UserModel.objects.get(pk=uid)
     addr_id = AddressModel.objects.get(pk=request.POST.get('addr_id'))
     goods_id = GoodsModel.objects.get(pk=request.POST.get('goods_id'))
     goods_cnts = int(request.POST.get('goods_cents'))
@@ -72,6 +79,7 @@ def order(request):
     })
     
 def order_test(request):
+    #实验用！
     if not login_yz.send(sender='seven', request=request)[0][1]:
         return HttpResponse('请先登录')
     a = AddressModel.objects.get(pk='5f630ecc-ef56-4066-90e3-eed3b01150fe')
