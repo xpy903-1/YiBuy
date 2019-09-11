@@ -5,10 +5,10 @@ app_name = 'loginapp'
 
 urlpatterns = [
      # path('add', add_city),
-     path('msg_', msg_code),
-     path('check', check_phone),
-     path('login/', login_pwd),
-     path('msg', msg_login),
-     path('forgot', forgot)
+     path('msgcode/', msg_code, name='msgcode'),
+     path('check/', check_phone, name='check'),
+     path('login/', login_pwd, name='login'),
+     path('msglogin/', msg_login, name='msglogin'),
+     path('forgot/', forgot, msg='forgot')
 ]
 
