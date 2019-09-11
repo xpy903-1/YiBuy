@@ -1,9 +1,13 @@
+import json
+
 from django.contrib.auth.hashers import check_password
+from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -39,7 +43,7 @@ class LoginView(View):
                         'name': user.name,
                         'phone': user.phone,
                     }
-                    return redirect('/')  # 重定向地址
+                    return redirect('/shopcart/hotgood')  # 重定向地址
                 else:
                     error_msg = '密码错误，请重新输入'
             else:
@@ -65,15 +69,21 @@ class goods_api(View):
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 def shop_cart(request):
-    # login_user = request.session.get('login_user', None)
-    # if not login_user:
-    #     return JsonResponse({
-    #         'code': 100,
-    #         'msg': '当前用户未登录'
-    #     })
+    login_user = request.session.get('login_user', None)
+    if not login_user:
+        return JsonResponse({
+            'code': 100,
+            'msg': '当前用户未登录'
+        })
     dict = {}
-    if ShopCarModel.objects.exists():
+    if not ShopCarModel.objects.exists():
+        return JsonResponse({
+            'code': 400,
+            'msg': '购物车没有商品'
+        })
+    else:
         shopcar = ShopCarModel.objects.all().values()
         picture = PictureModel.objects.all().values()
         ser_shop = ShopCartSerializer(shopcar, many=True)
@@ -82,28 +92,127 @@ def shop_cart(request):
         # picture = PictureModel.objects.values('picture_name', 'id', 'picture_path')
         # dict['cart_datas'] = list(shopcar)
         # dict['goods_detail'] = list(picture)
-    # else:
-    #     dict['msg'] = '购物车未添加数据'
 
         return JsonResponse({
-            'shopcar': ser_shop.data,
+            'cart_datas': ser_shop.data,
             'ser_picture': ser_picture.data
         }, safe=False)
 
+
 # 热门商品
 def hot_goods(request):
-    sales_volume = GoodsModel.objects.filter(sales_volume__gte=20).values() # 销量大于20
-    ser = GoodsSerializer(sales_volume, many=True)
-    return JsonResponse({'data': ser.data})
+    if not GoodsModel.objects.exists():
+        return JsonResponse({
+            'code': 400,
+            'msg': '为找到热门商品'
+        })
+    else:
+        sales_volume = GoodsModel.objects.filter(sales_volume__gte=20).values()  # 销量大于20
+        ser = GoodsSerializer(sales_volume, many=True)
+        return JsonResponse({
+            'code': 200,
+            'data': ser.data,
+        })
+
 
 # 精选商品
 def is_goodsed(request):
-    is_selected = GoodsModel.objects.filter(is_selected=True).values()
-    ser = GoodsSerializer(is_selected, many=True)
-    return JsonResponse({'data': ser.data})
+    if not GoodsModel.objects.exists():
+        return JsonResponse({
+            'code': 400,
+            'msg': '为找到精选商品'
+        })
+    else:
+        is_selected = GoodsModel.objects.filter(is_selected=True).values()
+        ser = GoodsSerializer(is_selected, many=True)
+        return JsonResponse({
+            'code': 200,
+            'datas': ser.data,
+            'msg': 'OK'
+        })
 
-def add_good(request):
-    pass
+
+@csrf_exempt
+def goods_add(request):
+    if request.method == 'POST':
+        user_id = UserModel.objects.get(pk=request.POST.get('user_id', None))
+        good_id = GoodsModel.objects.get(pk=request.POST.get('good_id', None))
+        count = request.POST.get('count', None)
+        if not all((user_id, good_id, count)):
+            return JsonResponse({
+                'code': 400,
+                'msg': '请求的参数不完整'
+            })
+        # 添加 user_id, good_id
+        add_data = ShopCarModel()
+        add_data.user_id = user_id
+        add_data.good_id = good_id
+        add_data.count = count
+
+        if ShopCarModel.objects.aggregate(cnt=Count('count')) > 1:
+            add_data.count += count
+        else:
+            add_data.save()
+        return JsonResponse({
+            'code': 200,
+            'msg': '添加成功',
+            'data': {
+                'user_id': add_data.user_id.name,
+                'good_id': add_data.good_id.name,
+                'count': add_data.count,
+            }
+        })
+
+    else:
+        return render(request, 'shopcart/goods_add.html')
+
+
+@csrf_exempt
+def goods_update(request):
+    if request.method == 'POST':
+        user_id = UserModel.objects.get(pk=request.POST.get('user_id', None))
+        good_id = GoodsModel.objects.get(pk=request.POST.get('good_id', None))
+        count = request.POST.get('count', None)
+        if not all((user_id, good_id, count)):
+            return JsonResponse({
+                'code': 400,
+                'msg': '参数不完整'
+            })
+        update_data = ShopCarModel.objects.get(pk=id)
+        update_data.user_id = user_id
+        update_data.good_id = good_id
+        update_data.count = count
+        update_data.save()
+        return JsonResponse({
+            'code': 200,
+            'msg': 'ok',
+            'data': {
+                'user_id': update_data.user_id,
+                'good_id': update_data.good_id,
+                'count': update_data.count
+            }
+        })
+    # return render(request, 'goods_add.html')
+
+
+@csrf_exempt
+def goods_delete(request):
+    if request.method == 'POST':
+        id = request.POST.get('id', None)
+        if id:
+            d_good = ShopCarModel.objects.get(pk=id)
+            d_good.delete()
+            return JsonResponse({
+                'code': 200,
+                'msg': '商品删除成功'
+            })
+        else:
+            return JsonResponse({
+                'code': 400,
+                'msg': '请求的商品ID不存在'
+            })
+    # else:
+    #     return render(request, 'adsdelete.html')
 
 # def add_shopcart(request, id):
 # login_user = request.session.get('login_user', None)

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"><!--支持IE浏览器 -->
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Title</title>
+</head>
+<body>
+<form>
+    <button onclick="c">登陆</button>
+    {% csrf_token %}
+</form>
+<script>
+function c()  {
+        url = 'http://10.36.174.29:8000/login/login/';
+
+        data1 = {
+            'u_phone': "13470016772",
+            'auth_string': '031837'
+        };
+        fetch(url, {
+            method: 'post',
+            body:JSON.stringify(data1),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(resp => resp.json())
+            .then(data => {
+                console.log(data);
+            })
+    }
+
+</script>
+</body>
+</html>
