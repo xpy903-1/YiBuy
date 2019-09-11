@@ -48,3 +48,5 @@ def msg_login(request):
 
 def forgot(request):
     return render(request, '', locals())
+
+
