@@ -41,22 +41,32 @@ def home_page(request):
     })
 
 
-def index(request, category_id):
-    goods_list = GoodsModel.objects.all()
-    list11 = []
-    for i in goods_list:
-        goods = {
-            "detail_name": i.detail,
-            "goods_img": str(i.goods_img),
-            "id": i.uid,
-            "marketprice": i.goods_price,
-            "name": i.name,
-            "price": i.market_price
+def index(request):
+    nav_pics = NavigationDetaiModel.objects.all()
+    list2 = []
+    for nav_pic in nav_pics:
+        nav_goods = nav_pic.goodsmodel_set.all()
+        list11 = []
+        for i in nav_goods:
+            goods = {
+                "detail_name": i.detail,
+                "goods_img": str(i.goods_img),
+                "id": i.uid,
+                "marketprice": i.goods_price,
+                "name": i.name,
+                "price": i.market_price
+            }
+            list11.append(goods)
+        data = {
+            "nav_name": nav_pic.img_name,
+            "nav_img": nav_pic.img1,
+            "goods_img": list11
         }
-        list11.append(goods)
+        list2.append(data)
+
     return JsonResponse({
         "code": 8000,
-        "data_nav": list11,
+        "data_nav": list2,
         "msg": "ok"
     })
 
