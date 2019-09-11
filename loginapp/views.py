@@ -56,11 +56,10 @@ def login_pwd(request):
     phone = request.POST.get('u_phone', None)
     pwd = request.POST.get('auth_string', None)
 
-    user = UserModel.objects.filter(phone=phone)
+    phone = UserModel.objects.filter(phone=phone).first()
 
-    if user:
-        user = user.first()
-        if pwd != user.pwd:
+    if phone:
+        if pwd != phone.pwd:
             return JsonResponse({
                 "code": 303,
                 "msg": "用户口令不正确"
@@ -72,7 +71,7 @@ def login_pwd(request):
                 'msg':'登录成功'
             })
             response.set_cookie('token', token, expires=60*10)
-            request.session['token'] = user.id
+            request.session['token'] = phone.id
             return response
     else:
         return JsonResponse({
@@ -85,24 +84,25 @@ def login_pwd(request):
 def msg_login(request):
     phone = request.POST.get('u_phone', None)
     code = request.POST.get('msg_code', None)
-    # 保存在session
-    request.session['phone'] = phone
-    request.session['code'] = code
 
     user = UserModel.objects.filter(phone=phone)
+
+    token = uuid.uuid4().hex
+
+    request
 
     data = {
         "balance": '',
         "gender": '',
-        "id": 1,
+        "id": user.id,
         "idcard": '',
-        "img": user_data.img1,
-        "is_active": user_data.is_life,
+        "img": user.img1,
+        "is_active": user.is_life,
         "is_delete": 0,
-        "nickname": "YG18991708565",
-        "u_auth_string": "123456",
-        "u_level": '',
-        "u_phone": "18991708565"
+        "nickname": "",
+        "u_auth_string": user.pwd,
+        "u_level": user.lever,
+        "u_phone": user.phone
     }
 
 
