@@ -7,5 +7,7 @@ def login_yz_fun(sender, **kwargs):
         print(not uid)
         if not uid:
             return False
+        else:
+            return True
     else:
         return False
