@@ -12,7 +12,7 @@ class AddressModel(models.Model):
                           verbose_name='地址编号')
 
     user_id = models.ForeignKey(UserModel,
-                                related_name='user',
+                                related_name='address',
                                 on_delete=models.CASCADE,
                                 verbose_name='用户ID')
 
@@ -45,7 +45,7 @@ class DiscountModel(models.Model):
 
     user_id = models.ForeignKey(UserModel,
                                 verbose_name='用户ID',
-                                related_name='users',
+                                related_name='discount',
                                 on_delete=models.CASCADE)
 
     discount_amout = models.FloatField(verbose_name='折扣金额',
@@ -66,8 +66,8 @@ class DiscountModel(models.Model):
             self.id = uuid.uuid4().hex
         super().save()
 
-    # def __str__(self):
-    #     return self.user_id
+    def __str__(self):
+        return self.id
 
     class Meta:
         db_table = 'app_discount'

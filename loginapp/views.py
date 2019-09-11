@@ -101,37 +101,7 @@ def msg_login(request):
 
 # 忘记密码
 def forgot(request):
-
-    # 生成token
-    token = uuid.uuid4().hex
-
-    return JsonResponse(token, {
-        "code": 200,
-        "user_data": {
-            "balance": '',
-            "gender": '',
-            "id": 1,
-            "idcard": '',
-            "img": '',
-            "is_active": 1,
-            "is_delete": 0,
-            "nickname": "YG18991708565",
-            "u_auth_string": "123456",
-            "u_level": '',
-            "u_phone": "18991708565"
-        }
-    })
+    return render(request, '', locals())
 
 
-def add_city(request):
-    with open('city.json', 'r', encoding='utf-8') as f:
-        city_dict = json.load(f)
-        for i in city_dict['Data']['CityList']:
-            for r in i['CityList']:
-                CitysModel.objects.create(
-                    name=r['AreaName'],
-                    start_str=r['FirstLetter'],
-                    is_popular=True
-                )
 
-    return HttpResponse('ok')

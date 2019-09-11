@@ -3,8 +3,7 @@ import uuid
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.http import JsonResponse
-
-
+from django.views.decorators.csrf import csrf_exempt
 
 from indexapp.models import UserModel
 from django.core.cache import cache
@@ -76,6 +75,7 @@ def loginout(request):
         return resp
 
 
+@csrf_exempt
 def upload_avator(request):
     token = request.COOKIES.get('token')
     if request.method == "Post":
