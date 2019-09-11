@@ -2,7 +2,7 @@ from django.http import JsonResponse
 
 from goodsapp.models import GoodsModel, FirstClassify
 from loginapp.models import EntertainmentModel
-from loginapp2.models import NavigationDetaiModel
+from loginapp2.models import NavigationDetaiModel, CarsouseiMapModel
 from addressapp.models import DiscountModel
 from goodsapp.models import SecClassify
 
@@ -15,7 +15,7 @@ def home_page(request):
         list = []
         j = 0
         for i in goods1:
-            if j < 5:
+            if j < 2:
                 data = {
                     "detail_name": i.description,
                     "goods_img": i.goods_img,
@@ -34,14 +34,15 @@ def home_page(request):
             "listimg": list
         }
         list1.append(data)
-
+    nav_pics = NavigationDetaiModel.objects.all()
     return JsonResponse({
         "code": 8000,
-        "data_chosen": list1
+        "data_chosen": list1,
+
     })
 
 
-def index(request):
+def navigation(request):
     nav_pics = NavigationDetaiModel.objects.all()
     list2 = []
     list1 = []
@@ -62,7 +63,6 @@ def index(request):
             "goods_img": list1
         }
         list2.append(data)
-
     return JsonResponse({
         "code": 8000,
         "data_nav": list2,
@@ -71,27 +71,27 @@ def index(request):
 
 
 def eats(request):
-    login_list = EntertainmentModel.objects.all()
-    login2_list = NavigationDetaiModel.objects.all()
-    list1 = []
-    list2 = []
-    for i in login2_list:
-        data2 = {
-            "eat_content": i.img_name,
-            "eat_img": str(i.img1)
+    wheel_pics = CarsouseiMapModel.objects.all()
+    wheel_pic_list = []
+    wheel_good_list = []
+    for wheel_pic in wheel_pics:
+        pic = {
+            "eat_content": wheel_pic.img_name,
+            "eat_img": str(wheel_pic.img1),
         }
-        list2.append(data2)
-    for i in login_list:
-        data1 = {
-            "eat_content": i.description,
-            "eat_img": str(i.picture),
-            "eat_time": i.time
+        wheel_pic_list.append(pic)
+        wheel_good = wheel_pic.goods_id
+        goods = {
+            "eat_content": wheel_good.description,
+            "eat_img": str(wheel_good.goods_img),
+            "eat_time": wheel_good.register_time
         }
-        list1.append(data1)
+        wheel_good_list.append(goods)
+
     return JsonResponse({
         "code": 8000,
-        "data_wheel": list2,
-        "img_eat_datas": list1,
+        "data_wheel": wheel_pic_list,
+        "img_eat_datas": wheel_good_list,
         "msg": "ok"
     })
 
@@ -133,8 +133,6 @@ def page_welfare(request):
             "price": i.goods_price
         }
         list.append(data)
-    # first_class = FirstClassify.objects.all()
-    # datas1 = first_class.name
     return JsonResponse({
         "code": 200,
         "datas1": list,
