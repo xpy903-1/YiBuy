@@ -1,3 +1,4 @@
+import json
 import uuid
 
 from django.http import HttpResponse, JsonResponse
@@ -9,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 # 检查手机号
+@csrf_exempt
 def check_phone(request):
     phone = request.POST.get('phone')
     user = UserModel.objects.filter(phone=phone)
@@ -30,6 +32,7 @@ def check_phone(request):
 def login_pwd(request):
     if request.method == 'GET':
         return render(request, 'login.html')
+
     data = json.loads(request.body.decode())
     phone = data.get('u_phone', None)
     pwd = data.get('auth_string', None)
@@ -54,4 +57,3 @@ def login_pwd(request):
             'code': 304,
             'msg': '该手机尚未注册'
         })
-
