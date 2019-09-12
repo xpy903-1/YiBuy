@@ -2,7 +2,6 @@ import json
 import os
 import uuid
 
-import demjson
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
