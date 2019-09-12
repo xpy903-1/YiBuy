@@ -1,21 +1,16 @@
 import uuid
 
-from django.core.cache import cache
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-import json
 
 from indexapp.models import UserModel
-from .models import CitysModel
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 
 
 # 检查手机号
 def check_phone(request):
-
-    data = request.body
-    phone = data.get('phone')
+    phone = request.POST.get('phone')
     user = UserModel.objects.filter(phone=phone)
 
     if not user:
