@@ -1,7 +1,11 @@
+import json
+
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
+from django.views.decorators.csrf import csrf_exempt
+
 from addressapp.models import AddressModel
 from goodsapp.models import SecClassify, FirstClassify, GoodsModel
 from indexapp.models import UserModel
@@ -22,7 +26,7 @@ def daohang(request, child_id, id):
         d = {
             'detail_name': i.detail,
             'goods_img': i.goods_img,
-            'id': i.id,
+            'id': i.uid,
             'marketprice': i.market_price,
             'name': i.name,
             'price': i.goods_price,
@@ -36,12 +40,12 @@ def daohang(request, child_id, id):
     })
 
 def feilei(request, category_id):
-    list1 = FirstClassify.objects.get(pk=category_id).secclass.all()
+    list1 = FirstClassify.objects.get(pk=category_id).secclassify_set.all()
     b = []
     for i in list1:
         d = {
-            'detail_img_url': i,
-            'id':i.id,
+            'detail_img_url': i.img,
+            'id':i.uid1,
             'name': i.name
         }
         b.append(d)
@@ -50,13 +54,19 @@ def feilei(request, category_id):
         'data_wheel': b,
         'msg': 'ok'
     })
-
+@csrf_exempt
 def order(request):
-    token = request.COOKIES.get('token')
-    uid = UserModel.objects.get(pk=request.session[token])
-    addr_id = AddressModel.objects.get(pk=request.POST.get('addr_id'))
-    goods_id = GoodsModel.objects.get(pk=request.POST.get('goods_id'))
-    goods_cnts = int(request.POST.get('goods_cents'))
+    uid = login_yz.send(sender='seven', request=request)[0][1]
+    if not uid:
+        return JsonResponse({
+            'code': 300,
+            'msg': '请先登录'
+        })
+    data = json.loads(request.body.decode())
+    uid = UserModel.objects.get(pk=uid)
+    addr_id = AddressModel.objects.get(pk=data.get('addr_id'))
+    goods_id = GoodsModel.objects.get(pk=data.get('goods_id'))
+    goods_cnts = int(data.get('goods_cents'))
     new_order = OrderModel.objects.create(
         count=goods_cnts,
         address_id=addr_id,
@@ -72,6 +82,7 @@ def order(request):
     })
     
 def order_test(request):
+    #实验用！
     if not login_yz.send(sender='seven', request=request)[0][1]:
         return HttpResponse('请先登录')
     a = AddressModel.objects.get(pk='5f630ecc-ef56-4066-90e3-eed3b01150fe')

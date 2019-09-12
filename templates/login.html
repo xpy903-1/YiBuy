@@ -7,8 +7,18 @@
 <body>
 <form method="post">
 
-    <button onclick="login()">登录</button>
+
+
     {% csrf_token %}
+
+
+    <input name="u_phone" type="text">
+    <br>
+    <input name="auth_string" type="text">
+    <br>
+
+    <button>登录</button>
+
 </form>
 <script>
     function login() {

@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 
 from goodsapp.models import GoodsModel, FirstClassify
-from loginapp.models import EntertainmentModel
+from loginapp.models import NavigationModel
 from loginapp2.models import NavigationDetaiModel, CarsouseiMapModel
 from addressapp.models import DiscountModel
 from goodsapp.models import SecClassify
@@ -44,33 +44,36 @@ def home_page(request):
             "name": wheel_pic.img_name,
         }
         wheel_pic_list.append(pic)
-    nav_pics = NavigationDetaiModel.objects.all()
-    nav_pic_list = []
-    nav_good_list = []
-    for nav_pic in nav_pics:
-        nav_good = nav_pic.goods_id
+    navis = NavigationModel.objects.all()
+    navs_list = []
+    for i in navis:
+        nav_pics = i.img_id
+        nav_pic_list = []
+        nav_good_list = []
+
+        nav_good = nav_pics.goods_id
         goods = {
-            "detail_name": nav_good.detail,
-            "goods_img": str(nav_good.goods_img),
-            "id": nav_good.uid,
-            "marketprice": nav_good.goods_price,
-            "name": nav_good.name,
-            "price": nav_good.market_price
-        }
+                "detail_name": nav_good.detail,
+                "goods_img": str(nav_good.goods_img),
+                "id": nav_good.uid,
+                "marketprice": nav_good.goods_price,
+                "name": nav_good.name,
+                "price": nav_good.market_price
+            }
         nav_good_list.append(goods)
         data = {
-            "nav_name": nav_pic.img_name,
-            "nav_img": str(nav_pic.img1),
-            "goods_img": nav_good_list
-        }
+                "nav_name": nav_pics.img_name,
+                "nav_img": str(nav_pics.img1),
+                "goods_img": nav_good_list
+            }
         nav_pic_list.append(data)
     return JsonResponse({
-        "code": 8000,
-        "data_wheel": wheel_pic_list,
-        "data_nav": nav_pic_list,
-        "img_chosen_otherdata": list1,
-        "msg": "ok"
-    })
+            "code": 8000,
+            "data_wheel": wheel_pic_list,
+            "data_nav": nav_pic_list,
+            "img_chosen_otherdata": list1,
+            "msg": "ok"
+        })
 
 
 def navigation(request):

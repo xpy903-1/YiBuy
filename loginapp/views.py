@@ -1,20 +1,19 @@
+import json
 import uuid
 
-from django.core.cache import cache
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-import json
 
 from indexapp.models import UserModel
-from .models import CitysModel
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 
 
 # 检查手机号
+@csrf_exempt
 def check_phone(request):
+    data = json.loads(request.body.decode())
 
-    data = request.body
     phone = data.get('phone')
     user = UserModel.objects.filter(phone=phone)
 
@@ -36,15 +35,14 @@ def login_pwd(request):
     if request.method == 'GET':
         return render(request, 'login.html')
 
+
     data = request.body
+
+    data = json.loads(request.body.decode())
+
     phone = data.get('u_phone', None)
     pwd = data.get('auth_string', None)
-    phone = request.POST.get('u_phone', None)
-    pwd = request.POST.get('auth_string', None)
-    print(phone)
-
     phone = UserModel.objects.filter(phone=phone).first()
-
     if phone:
         if pwd != phone.pwd:
             return JsonResponse({
@@ -58,8 +56,6 @@ def login_pwd(request):
                 'msg': '登录成功'
             })
             response.set_cookie('token', token, expires=60 * 10)
-            request.session['token'] = phone.id
-            response.set_cookie('token', token, expires=60*10)
             request.session[token] = phone.id
             return response
     else:
@@ -67,4 +63,3 @@ def login_pwd(request):
             'code': 304,
             'msg': '该手机尚未注册'
         })
-

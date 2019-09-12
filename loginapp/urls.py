@@ -2,7 +2,6 @@ from django.urls import path
 
 from .views import check_phone, login_pwd
 
-
 app_name = 'loginapp'
 
 urlpatterns = [
