@@ -20,17 +20,17 @@ def detaios(request):
             'code': 300,
             'msg': "用户未登录,请重新登录"
     })
-    # if request.method == "POST":
     else:
-        user = UserModel.objects.filter(id=user_id).first()
-        if user:
-            return JsonResponse({
-                    'code': 200,
-                    'msg': '获取成功',
-                    'name': user.name,
-                    'gender': user.sex,
-                    'level': user.level,
-            })
+        if request.method == "POST":
+            user = UserModel.objects.filter(id=user_id).first()
+            if user:
+                return JsonResponse({
+                        'code': 200,
+                        'msg': '获取成功',
+                        'name': user.name,
+                        'gender': user.sex,
+                        'level': user.level,
+                })
 
 @csrf_exempt
 def change(request):
@@ -43,8 +43,8 @@ def change(request):
     if request.method == 'GET':
         return render(request, 'change.html')
     date = json.loads(request.body)
-    user_name = request.POST.get('user_name', None)
-    user_phone = request.POST.get('user_phone', None)
+    user_name = date.get('user_name', None)
+    user_phone = date.get('user_phone', None)
     user_pwd = date.get('user_pwd', None)
     if not all((user_name, user_pwd, user_phone)):
         return JsonResponse({
