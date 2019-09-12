@@ -14,5 +14,15 @@ def test_login():
     print(resp.json())
 
 
+def test_check():
+    data = {
+        'phone': '13619254683'
+    }
+
+    resp = requests.get('http://localhost:8000/login/check/', json=data)
+    print(resp.json())
+
+
 if __name__ == '__main__':
     test_login()
+    test_check()
