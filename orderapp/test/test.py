@@ -22,5 +22,6 @@ def test_asd11():
     print(resp.json())
 
 if __name__ == '__main__':
-    # test_asd()
+    test_asd()
+    test_asd1()
     test_asd11()
