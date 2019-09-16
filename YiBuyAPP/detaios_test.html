@@ -8,19 +8,15 @@
 </head>
 <body>
 <script>
-    window.onload = function ()  {
-        url = 'http://localhost:8000/login/login/';
+    window.onload = function () {
+        url = 'http://localhost:8000/login2/detaios/';
 
-        data = {
-            u_phone: "13470061772",
-            auth_string: '031837'
-        };
+
         fetch(url, {
             credentials: 'include',
             method: 'post',
-            body:JSON.stringify(data),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/text'
             }
         }).then(resp => resp.json())
             .then(data => {

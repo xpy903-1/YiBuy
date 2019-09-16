@@ -8,17 +8,19 @@ class GoodsSerializer(serializers.HyperlinkedModelSerializer):
         model = GoodsModel
         fields = ('uid', 'name', 'goods_price', 'is_selected', 'goods_img')
 
+
 class ShopCartSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ShopCarModel
         fields = ('id', 'count', 'is_selected')
+
 
 class PictureSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = PictureModel
         fields = ('id', 'picture_name', 'picture_path', 'picture_width', 'picture_height')
 
+
 class GoodsAPIView(viewsets.ModelViewSet):
     queryset = GoodsModel.objects.all()
     serializer_class = GoodsSerializer
-

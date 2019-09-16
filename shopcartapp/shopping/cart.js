@@ -11,7 +11,7 @@ $(ev=>{
         dataType: 'json',
         success: function (data) {
             // data 是 json 对象类型
-            cartData = data
+            cartData = data;
 
             $('.user_name').text(data.user.name);
             // each 迭代函数
@@ -62,7 +62,7 @@ function init_even() {
         if(cntObj.val() >= 20){
             return
         }
-         cntObj.val(parseInt(cntObj.val()) +1)
+         cntObj.val(parseInt(cntObj.val()) +1);
         cntChange(cntObj[0].index,cntObj.val())
     });
     // 设置数量变化的监听
@@ -100,7 +100,7 @@ function init_even() {
         // true 勾选 false 非勾选
         // 判断是否为全选checkbox
         let checked = ev.target.checked;
-        console.log(checked,ev.target.name)
+        console.log(checked,ev.target.name);
         let goods_id = ev.target.id;
         if(ev.target.name ==="checkAll"){
             // 全选标签
@@ -125,10 +125,8 @@ function init_even() {
             }
         }
     )
-
-
-
 }
+
 function cntChange(index,value) {
         index = parseInt(index);
         // 更新指定位置的商品的数量
@@ -136,6 +134,7 @@ function cntChange(index,value) {
 
         refreshTotal()
     }
+
 // 改变数量改变金额
 function refreshTotal(){
     totalPrice = 0;

@@ -3,10 +3,9 @@ import os
 import uuid
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render
+from django.http import JsonResponse
+
 from django.views.decorators.csrf import csrf_exempt
-from django.core.cache import cache
 
 from indexapp.models import UserModel
 from signal import login_yz
@@ -19,6 +18,7 @@ def detaios(request):
         return JsonResponse({
             'code': 300,
             'msg': "用户未登录,请重新登录"
+<<<<<<< HEAD
         })
     # if request.method == "POST":
     else:
@@ -31,6 +31,21 @@ def detaios(request):
                 'gender': user.sex,
                 'level': user.level,
             })
+=======
+    })
+    else:
+        if request.method == "POST":
+            user = UserModel.objects.filter(id=user_id).first()
+            if user:
+                return JsonResponse({
+                        'code': 200,
+                        'msg': '获取成功',
+                        'name': user.name,
+                        'gender': user.sex,
+                        'level': user.level,
+                        # 'img1': user.img1
+                })
+>>>>>>> 4c604bbd4492ee3cc679aae6aa0a59065f0d43d7
 
 
 @csrf_exempt
@@ -41,11 +56,9 @@ def change(request):
             'code': 300,
             'msg': "用户未登录,请重新登录"
         })
-    if request.method == 'GET':
-        return render(request, 'change.html')
     date = json.loads(request.body)
-    user_name = request.POST.get('user_name', None)
-    user_phone = request.POST.get('user_phone', None)
+    user_name = date.get('user_name', None)
+    user_phone = date.get('user_phone', None)
     user_pwd = date.get('user_pwd', None)
     if not all((user_name, user_pwd, user_phone)):
         return JsonResponse({
@@ -68,8 +81,12 @@ def change(request):
 
 
 def loginout(request):
-    # if not login_yz.send(sender='seven', request=request)[0][1]:
-    #     return
+    user_id = login_yz.send(sender='ap', request=request)[0][1]
+    if not user_id:
+        return JsonResponse({
+            'code': 300,
+            'msg': "用户未登录,请重新登录"
+        })
     token = request.COOKIES.get("token", None)
     if not token:
         return JsonResponse(
@@ -92,12 +109,17 @@ def loginout(request):
 
 @csrf_exempt
 def upload_avator(request):
-    token = request.COOKIES.get('token')
-    if request.method == "Post":
-        user_id = cache.get(token)
+    user_id = login_yz.send(sender='ap', request=request)[0][1]
+    if not user_id:
+        return JsonResponse({
+            'code': 300,
+            'msg': "用户未登录,请重新登录"
+        })
+    if request.method == "POST":
         user = UserModel.objects.filter(id=user_id).first()
         key = user.name
         upload_file: InMemoryUploadedFile = request.FILES.get('img1')
+        print(upload_file)
         if upload_file:
             if all((
                     upload_file.content_type.startswith('image/'),
@@ -122,7 +144,11 @@ def upload_avator(request):
                     'code': 201,
                     'msg': '图片格式只支持png或jpeg'
                 })
-
+    else:
+        return JsonResponse({
+            'code': 300,
+            'msg': '图片'
+        })
 
 def u_img(request):
     user_id = login_yz.send(sender='ap', request=request)[0][1]

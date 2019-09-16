@@ -8,17 +8,18 @@
 </head>
 <body>
 <script>
-    window.onload = function ()  {
-        url = 'http://localhost:8000/login/login/';
+    window.onload = function () {
+        url = 'http://localhost:8000/login2/change/';
 
         data = {
-            u_phone: "13470061772",
-            auth_string: '031837'
+           'user_name': '东',
+            'user_phone': '13470016772',
+            'user_pwd': '14740557360'
         };
         fetch(url, {
             credentials: 'include',
             method: 'post',
-            body:JSON.stringify(data),
+            body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
             }
