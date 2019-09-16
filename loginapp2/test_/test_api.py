@@ -8,8 +8,8 @@ class Login_Case(TestCase):
     token = 1
     def test_01_login(self):
         data = {
-            'u_phone': '13470016772',
-            'auth_string': '14740557360'
+            'u_phone': '1347000002',
+            'auth_string': '12345680'
         }
 
         resp = requests.post('http://localhost:8000/login/login/', json=data)
@@ -29,18 +29,24 @@ class Login_Case(TestCase):
         data = {
             'user_id': Login_Case.token,
             'user_name': '东',
-            'user_phone': '13470009372',
-            'user_pwd': '1474055'
+            'user_phone': '1347000002',
+            'user_pwd': '12345680'
         }
         resp = requests.post('http://localhost:8000/login2/change/', json=data)
         print(resp.json())
 
     def test_04_imgurl(self):
-        resp = requests.get('http://localhost:8000/login2/imgurl')
+        data = {
+            'user_id': Login_Case.token
+        }
+        resp = requests.post('http://localhost:8000/login2/imgurl/', json=data)
         print(resp.json())
 
     def test_05_loginout(self):
-        resp = requests.get('http://localhost:8000/login2/loginout/')
+        data = {
+            'user_id': Login_Case.token
+        }
+        resp = requests.post('http://localhost:8000/login2/loginout/', json=data )
         print(resp.json())
 
 

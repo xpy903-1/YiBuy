@@ -45,7 +45,6 @@ def detaios(request):
 
 @csrf_exempt
 def change(request):
-
     if request.method == "POST":
         date = json.loads(request.body)
         print(date)
@@ -79,87 +78,89 @@ def change(request):
                 })
 
 
-
+@csrf_exempt
 def loginout(request):
-    user_id = login_yz.send(sender='ap', request=request)[0][1]
-    if not user_id:
-        return JsonResponse({
-            'code': 300,
-            'msg': "用户未登录,请重新登录"
-        })
-    token = request.COOKIES.get("token", None)
-    if not token:
-        return JsonResponse(
-            ({
-                'code': 304,
-                'msg': '传入数据为空'
+    if request.method == "POST":
+        date = json.loads(request.body)
+        user_id = date.get('user_id')
+        if not user_id:
+            return JsonResponse({
+                'code': 300,
+                'msg': "用户未登录,请重新登录"
             })
-        )
-    else:
-        request.session.clear()
-        resp = JsonResponse(
-            ({
-                'code': 200,
-                'msg': '退出成功！'
-            })
-        )
-        resp.delete_cookie('token')
-        return resp
+        else:
+            request.session.clear()
+            resp = JsonResponse(
+                ({
+                    'code': 200,
+                    'msg': '退出成功！'
+                })
+            )
+            resp.delete_cookie('token')
+            return resp
 
 
 @csrf_exempt
 def upload_avator(request):
-    user_id = login_yz.send(sender='ap', request=request)[0][1]
-    if not user_id:
-        return JsonResponse({
-            'code': 300,
-            'msg': "用户未登录,请重新登录"
-        })
     if request.method == "POST":
-        user = UserModel.objects.filter(id=user_id).first()
-        key = user.name
-        upload_file: InMemoryUploadedFile = request.FILES.get('img1')
-        print(upload_file)
-        if upload_file:
-            if all((
-                    upload_file.content_type.startswith('image/'),
-                    upload_file.content_type.endswith('.png' or '.jpeg')
-            )):
-                filename = str(uuid.uuid4()) + os.path.splitext(upload_file.name)[
-                    -1]
-                with open('media/user_tou/' + filename, 'wb') as f:
-                    # 分段写入
-                    for chunk in upload_file.chunks():
-                        f.write(chunk)
+        date = json.loads(request.body)
+        print(date)
+        user_id = date.get('user_id')
+        if not user_id:
+            return JsonResponse({
+                'code': 300,
+                'msg': "用户未登录,请重新登录"
+            })
+        else:
+            user = UserModel.objects.filter(id=user_id).first()
+            key = user.name
+            upload_file: InMemoryUploadedFile = request.FILES.get('img1')
+            print(upload_file)
+            if upload_file:
+                if all((
+                        upload_file.content_type.startswith('image/'),
+                        upload_file.content_type.endswith('.png' or '.jpeg')
+                )):
+                    filename = str(uuid.uuid4()) + os.path.splitext(upload_file.name)[
+                        -1]
+                    with open('media/user_tou/' + filename, 'wb') as f:
+                        # 分段写入
+                        for chunk in upload_file.chunks():
+                            f.write(chunk)
 
-                    f.flush()
+                        f.flush()
 
-                return JsonResponse({
-                    'code': 200,
-                    'msg': '上传文件成功',
-                    'file_key': key
-                })
-            else:
-                return JsonResponse({
-                    'code': 201,
-                    'msg': '图片格式只支持png或jpeg'
-                })
+                    return JsonResponse({
+                        'code': 200,
+                        'msg': '上传文件成功',
+                        'file_key': key
+                    })
+                else:
+                    return JsonResponse({
+                        'code': 201,
+                        'msg': '图片格式只支持png或jpeg'
+                    })
     else:
         return JsonResponse({
             'code': 300,
             'msg': '图片'
         })
 
+@csrf_exempt
 def u_img(request):
-    user_id = login_yz.send(sender='ap', request=request)[0][1]
-    if not user_id:
-        return JsonResponse({
-            'code': 300,
-            'msg': "用户未登录,请重新登录"
-        })
-    user = UserModel.objects.filter(id=user_id).first()
-    img_url = 'http://127.0.0.1:8000/m/' + str(user.img1)
-    return JsonResponse({
-        'code': 200,
-        'url': img_url
-    })
+    if request.method == "POST":
+        date = json.loads(request.body)
+        print(date)
+        user_id = date.get('user_id')
+        if not user_id:
+            return JsonResponse({
+                'code': 300,
+                'msg': "用户未登录,请重新登录"
+            })
+        else:
+            user = UserModel.objects.filter(id=user_id).first()
+            img_url = 'http://127.0.0.1:8000/m/' + str(user.img1)
+            return JsonResponse({
+                'code': 200,
+                'url': img_url
+            })
