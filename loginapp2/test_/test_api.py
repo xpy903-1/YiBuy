@@ -21,7 +21,7 @@ class Login_Case(TestCase):
 
         files = {'name': a}
         resp = requests.request(method='post', url=url, files=files)
-        print(resp)
+        print(resp.json())
     # def test_detaios():
     #     resp = requests.post('http://localhost:8000/login2/detaios/')
     #     print(resp.json())

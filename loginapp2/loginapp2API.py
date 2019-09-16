@@ -99,7 +99,7 @@ def upload_avator(request):
             'msg': "用户未登录,请重新登录"
         })
     if request.method == "POST":
-        user = UserModel.objects.filter(id='c74072bd-338e-48b6-8149-645b7f982db8').first()
+        user = UserModel.objects.filter(id=user_id).first()
         key = user.name
         upload_file: InMemoryUploadedFile = request.FILES.get('img1')
         print(upload_file)
