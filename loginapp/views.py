@@ -12,7 +12,9 @@ from django.views.decorators.csrf import csrf_exempt
 # 检查手机号
 @csrf_exempt
 def check_phone(request):
-    phone = request.POST.get('phone')
+    data = json.loads(request.body.decode())
+
+    phone = data.get('phone')
     user = UserModel.objects.filter(phone=phone)
 
     if not user:
@@ -33,7 +35,11 @@ def login_pwd(request):
     if request.method == 'GET':
         return render(request, 'login.html')
 
+
+    data = request.body
+
     data = json.loads(request.body.decode())
+
     phone = data.get('u_phone', None)
     pwd = data.get('auth_string', None)
     phone = UserModel.objects.filter(phone=phone).first()
