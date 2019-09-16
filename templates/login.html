@@ -6,17 +6,32 @@
 </head>
 <body>
 <form method="post">
-<<<<<<< HEAD
     {% csrf_token %}
-    <input name="name" type="text">
-    <input name="pwd" type="text">
-=======
     <input name="u_phone" type="text">
     <br>
     <input name="auth_string" type="text">
     <br>
->>>>>>> 4193877d94cdab00371c160cd4ccfa81acaaa9b0
+
     <button>登录</button>
+
 </form>
+<script>
+    function login() {
+        fetch('http://127.0.0.1:8000/login/login', {
+            method:'post',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({
+                'u_phone':'18292364563',
+                'pwd':'123456'
+            })
+        }).then(resp=>resp.json())
+            .then(data=>{
+                console.log(data)
+            })
+
+    }
+</script>
 </body>
 </html>

@@ -16,8 +16,9 @@ def address_query(request):
     # if not login_yz.send(sender='delete_addr', request=request)[0][1]:
     #     return HttpResponse('请先登录')
     if request.method == 'POST':
-        name = request.POST.get('name', None)
-        phone = request.POST.get('phone', None)
+        data = json.loads(request.body.decode())
+        name = data.get('name', None)
+        phone = data.get('phone', None)
         if not any((name, phone)):
             return JsonResponse({
                 'code': 201,
@@ -57,16 +58,17 @@ def address_query(request):
                     'data': query_data
                 })
     else:
-        return render(request, 'address/ads_query.html')
+        return render(request, 'address/ads_query.html',)
 
 
 @csrf_exempt
 def address_add(request):
     if request.method == 'POST':
-        user_id = UserModel.objects.get(pk=request.POST.get('user_id', None))
-        name = request.POST.get('name', None)
-        phone = request.POST.get('phone', None)
-        ads = request.POST.get('ads', None)
+        data = json.loads(request.body.decode())
+        user_id = UserModel.objects.get(pk=data.get('user_id', None))
+        name = data.get('name', None)
+        phone = data.get('phone', None)
+        ads = data.get('ads', None)
         if not all((user_id, name, phone, ads)):
             return JsonResponse({
                 'code': 400,
@@ -97,10 +99,11 @@ def address_edit(request):
     # if not login_yz.send(sender='delete_addr', request=request)[0][1]:
     #     return HttpResponse('请先登录')
     if request.method == 'POST':
-        id = request.POST.get('id', None)
-        name = request.POST.get('name', None)
-        phone = request.POST.get('phone', None)
-        ads = request.POST.get('ads', None)
+        data = json.loads(request.body.decode())
+        id = data.get('id', None)
+        name = data.get('name', None)
+        phone = data.get('phone', None)
+        ads = data.get('ads', None)
         if not all((id, name, phone, ads)):
             return JsonResponse({
                 'code': 400,
@@ -129,7 +132,8 @@ def address_delete(request):
     # if not login_yz.send(sender='delete_addr', request=request)[0][1]:
     #     return HttpResponse('请先登录')
     if request.method == 'POST':
-        id = request.POST.get('id', None)
+        data = json.loads(request.body.decode())
+        id = data.get('id', None)
         if id:
             adde = AddressModel.objects.get(pk=id)
             adde.delete()

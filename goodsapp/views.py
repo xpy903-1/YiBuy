@@ -102,7 +102,10 @@ def search(request):
                 "category_id": info.cate_id.uid2.uid,
                 "category_name": info.cate_id.uid2.name,
                 "child_id": info.cate_id.uid1,
-                "child_name": info.cate_id.name
+                "child_name": info.cate_id.name,
+                'goods_id': info.uid,
+                'goods_name':info.name,
+                'goods_des': info.description
             }
             data_list.append(data_dict)
 
