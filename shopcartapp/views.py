@@ -120,7 +120,7 @@ def is_goodsed(request):
     if not GoodsModel.objects.exists():
         return JsonResponse({
             'code': 400,
-            'msg': '为找到精选商品'
+            'msg': '未找到精选商品'
         })
     else:
         is_selected = GoodsModel.objects.filter(is_selected=True).values()
@@ -138,6 +138,12 @@ def goods_add(request):
         user_id = UserModel.objects.get(pk=request.POST.get('user_id', None))
         good_id = GoodsModel.objects.get(pk=request.POST.get('good_id', None))
         count = request.POST.get('count', None)
+
+        # data = json.loads(request.body.decode())
+        # user_id = UserModel.objects.get(pk=data.get('user_id', None))
+        # good_id = GoodsModel.objects.get(pk=data.get('good_id', None))
+        # count = data.get('count', None)
+
         if not all((user_id, good_id, count)):
             return JsonResponse({
                 'code': 400,
@@ -150,10 +156,10 @@ def goods_add(request):
         add_data.count = count
         add_data.save()
 
-        cnt = ShopCarModel.objects.aggregate(cnt=Count('count'))
-        if cnt['cnt'] > 1:
-            add_data.count += count
-            add_data.save()
+        # cnt = ShopCarModel.objects.aggregate(cnt=Count('count'))
+        # if cnt['cnt'] > 1:
+        #     add_data.count += count
+        #     add_data.save()
         return JsonResponse({
             'code': 200,
             'msg': '添加成功',
@@ -193,12 +199,14 @@ def goods_update(request):
                 'count': update_data.count
             }
         })
-    # return render(request, 'goods_add.html')
+    # return render(request, 'shopcart/goods_add.html')
 
 
 @csrf_exempt
 def goods_delete(request):
     if request.method == 'POST':
+        # data = json.loads(request.body.decode())
+        # id = data.get('id', None)
         id = request.POST.get('id', None)
         if id:
             d_good = ShopCarModel.objects.get(pk=id)
@@ -212,8 +220,8 @@ def goods_delete(request):
                 'code': 400,
                 'msg': '请求的商品ID不存在'
             })
-    # else:
-    #     return render(request, '.html')
+    else:
+        return render(request, 'shopcart/goods_delete.html')
 
 
 

@@ -132,7 +132,7 @@ def address_delete(request):
     # if not login_yz.send(sender='delete_addr', request=request)[0][1]:
     #     return HttpResponse('请先登录')
     if request.method == 'POST':
-        data = json.loads(request.body.decode())
+        data = json.load(request.body.decode())
         id = data.get('id', None)
         if id:
             adde = AddressModel.objects.get(pk=id)
