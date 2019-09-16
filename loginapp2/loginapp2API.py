@@ -11,25 +11,27 @@ from django.core.cache import cache
 from indexapp.models import UserModel
 from signal import login_yz
 
+
 @csrf_exempt
 def detaios(request):
-    user_id = login_yz.send(sender='ap',request=request)[0][1]
+    user_id = login_yz.send(sender='ap', request=request)[0][1]
     if not user_id:
         return JsonResponse({
             'code': 300,
             'msg': "用户未登录,请重新登录"
-    })
+        })
     # if request.method == "POST":
     else:
         user = UserModel.objects.filter(id=user_id).first()
         if user:
             return JsonResponse({
-                    'code': 200,
-                    'msg': '获取成功',
-                    'name': user.name,
-                    'gender': user.sex,
-                    'level': user.level,
+                'code': 200,
+                'msg': '获取成功',
+                'name': user.name,
+                'gender': user.sex,
+                'level': user.level,
             })
+
 
 @csrf_exempt
 def change(request):
@@ -47,22 +49,22 @@ def change(request):
     user_pwd = date.get('user_pwd', None)
     if not all((user_name, user_pwd, user_phone)):
         return JsonResponse({
-                'code': 300,
-                'msg': '数据不能为空'
-            })
+            'code': 300,
+            'msg': '数据不能为空'
+        })
     user = UserModel.objects.filter(id=user_id).first()
     if user:
         user.phone = user_phone
         user.pwd = user_pwd
         user.save()
         return JsonResponse({
-                    'code': 200,
-                    'msg': '修改信息成功'
-                })
-    return JsonResponse({
-            'code': 300,
-            'msg': '没有找到用户'
+            'code': 200,
+            'msg': '修改信息成功'
         })
+    return JsonResponse({
+        'code': 300,
+        'msg': '没有找到用户'
+    })
 
 
 def loginout(request):
@@ -134,4 +136,4 @@ def u_img(request):
     return JsonResponse({
         'code': 200,
         'url': img_url
-        })
+    })
