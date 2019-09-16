@@ -50,10 +50,11 @@ def login_pwd(request):
                 "msg": "用户口令不正确"
             })
         else:
+
             token = uuid.uuid4().hex
             response = JsonResponse({
                 'code': 200,
-                'msg': '登录成功'
+                'msg': '登录成功',
             })
             response.set_cookie('token', token, expires=60 * 10)
             request.session[token] = phone.id

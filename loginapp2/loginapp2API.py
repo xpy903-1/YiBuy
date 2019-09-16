@@ -7,60 +7,74 @@ from django.http import JsonResponse
 
 from django.views.decorators.csrf import csrf_exempt
 
+
 from indexapp.models import UserModel
 from signal import login_yz
 
+
 @csrf_exempt
 def detaios(request):
-    user_id = login_yz.send(sender='ap', request=request)[0][1]
-    if not user_id:
-        return JsonResponse({
-            'code': 300,
-            'msg': "用户未登录,请重新登录"
+    if request.method == "POST":
+        token = json.loads(request.body)
+        print(token)
+        user_id = token.get('user_id')
+        print(user_id)
+        if not user_id:
+            return JsonResponse({
+                'code': 300,
+                'msg': "用户未登录,请重新登录"
     })
-    else:
-        if request.method == "POST":
-            user = UserModel.objects.filter(id=user_id).first()
-            if user:
+        else:
+            user = UserModel.objects.filter(id=user_id)
+            print(user)
+            if user.exists():
+                user = user.first()
+
                 return JsonResponse({
                         'code': 200,
                         'msg': '获取成功',
                         'name': user.name,
                         'gender': user.sex,
                         'level': user.level,
-                        # 'img1': user.img1
                 })
+            else:
+                return JsonResponse({
+                                        'code': 300,
+                                        'msg': '该用户不存在', })
+
 
 @csrf_exempt
 def change(request):
-    user_id = login_yz.send(sender='ap', request=request)[0][1]
-    if not user_id:
-        return JsonResponse({
-            'code': 300,
-            'msg': "用户未登录,请重新登录"
-        })
-    date = json.loads(request.body)
-    user_name = date.get('user_name', None)
-    user_phone = date.get('user_phone', None)
-    user_pwd = date.get('user_pwd', None)
-    if not all((user_name, user_pwd, user_phone)):
+    if request.method == "POST":
+        date = json.loads(request.body)
+        print(date)
+        user_name = date.get('user_name', None)
+        user_phone = date.get('user_phone', None)
+        user_pwd = date.get('user_pwd', None)
+        user_id = date.get('user_id')
+        if not user_id:
+            return JsonResponse({
+                'code': 300,
+                'msg': "用户未登录,请重新登录"
+            })
+        if not all((user_name, user_pwd, user_phone)):
+            return JsonResponse({
+                    'code': 300,
+                    'msg': '数据不能为空'
+                })
+        user = UserModel.objects.filter(id=user_id).first()
+        if user:
+            user.phone = user_phone
+            user.pwd = user_pwd
+            user.save()
+            return JsonResponse({
+                        'code': 200,
+                        'msg': '修改信息成功'
+                    })
         return JsonResponse({
                 'code': 300,
-                'msg': '数据不能为空'
+                'msg': '没有找到用户'
             })
-    user = UserModel.objects.filter(id=user_id).first()
-    if user:
-        user.phone = user_phone
-        user.pwd = user_pwd
-        user.save()
-        return JsonResponse({
-                    'code': 200,
-                    'msg': '修改信息成功'
-                })
-    return JsonResponse({
-            'code': 300,
-            'msg': '没有找到用户'
-        })
 
 
 def loginout(request):
