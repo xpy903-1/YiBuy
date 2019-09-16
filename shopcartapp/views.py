@@ -215,6 +215,9 @@ def goods_delete(request):
     # else:
     #     return render(request, '.html')
 
+
+
+
 # def add_shopcart(request, id):
 # login_user = request.session.get('login_user', None)
 #     # if not login_user:
