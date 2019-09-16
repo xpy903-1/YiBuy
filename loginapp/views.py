@@ -52,7 +52,7 @@ def login_pwd(request):
             response = JsonResponse({
                 'code': 200,
                 'msg': '登录成功',
-                'token': 'phone.id'
+                'token': phone.id
             })
             response.set_cookie('token', token, expires=60 * 10)
             request.session[token] = phone.id
