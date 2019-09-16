@@ -50,7 +50,6 @@ def home_page(request):
         nav_pics = i.img_id
         nav_pic_list = []
         nav_good_list = []
-
         nav_good = nav_pics.goods_id
         goods = {
                 "detail_name": nav_good.detail,
