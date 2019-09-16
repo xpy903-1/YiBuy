@@ -3,10 +3,9 @@ import os
 import uuid
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render
+from django.http import JsonResponse
+
 from django.views.decorators.csrf import csrf_exempt
-from django.core.cache import cache
 
 from indexapp.models import UserModel
 from signal import login_yz
@@ -29,6 +28,7 @@ def detaios(request):
                         'name': user.name,
                         'gender': user.sex,
                         'level': user.level,
+                        'img1': user.img1
                 })
 
 @csrf_exempt
@@ -39,8 +39,6 @@ def change(request):
             'code': 300,
             'msg': "用户未登录,请重新登录"
         })
-    if request.method == 'GET':
-        return render(request, 'change.html')
     date = json.loads(request.body)
     user_name = date.get('user_name', None)
     user_phone = date.get('user_phone', None)
@@ -66,8 +64,12 @@ def change(request):
 
 
 def loginout(request):
-    # if not login_yz.send(sender='seven', request=request)[0][1]:
-    #     return
+    user_id = login_yz.send(sender='ap', request=request)[0][1]
+    if not user_id:
+        return JsonResponse({
+            'code': 300,
+            'msg': "用户未登录,请重新登录"
+        })
     token = request.COOKIES.get("token", None)
     if not token:
         return JsonResponse(
@@ -90,12 +92,17 @@ def loginout(request):
 
 @csrf_exempt
 def upload_avator(request):
-    token = request.COOKIES.get('token')
-    if request.method == "Post":
-        user_id = cache.get(token)
-        user = UserModel.objects.filter(id=user_id).first()
+    user_id = login_yz.send(sender='ap', request=request)[0][1]
+    if not user_id:
+        return JsonResponse({
+            'code': 300,
+            'msg': "用户未登录,请重新登录"
+        })
+    if request.method == "POST":
+        user = UserModel.objects.filter(id='c74072bd-338e-48b6-8149-645b7f982db8').first()
         key = user.name
         upload_file: InMemoryUploadedFile = request.FILES.get('img1')
+        print(upload_file)
         if upload_file:
             if all((
                     upload_file.content_type.startswith('image/'),
@@ -120,7 +127,11 @@ def upload_avator(request):
                     'code': 201,
                     'msg': '图片格式只支持png或jpeg'
                 })
-
+    else:
+        return JsonResponse({
+            'code': 300,
+            'msg': '图片'
+        })
 
 def u_img(request):
     user_id = login_yz.send(sender='ap', request=request)[0][1]
