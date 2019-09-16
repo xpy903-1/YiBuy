@@ -12,7 +12,7 @@ from signal import login_yz
 
 @csrf_exempt
 def detaios(request):
-    user_id = login_yz.send(sender='ap',request=request)[0][1]
+    user_id = login_yz.send(sender='ap', request=request)[0][1]
     if not user_id:
         return JsonResponse({
             'code': 300,
@@ -28,7 +28,7 @@ def detaios(request):
                         'name': user.name,
                         'gender': user.sex,
                         'level': user.level,
-                        'img1': user.img1
+                        # 'img1': user.img1
                 })
 
 @csrf_exempt

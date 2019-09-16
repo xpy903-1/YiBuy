@@ -44,6 +44,6 @@ class Login_Case(TestCase):
     #
     #
     #
-    # def test_imgurl():
-    #     resp = requests.get('http://localhost:8000/login2/imgurl')
-    #     print(resp.json())
+    def test_imgurl(self):
+        resp = requests.get('http://localhost:8000/login2/imgurl')
+        print(resp.json())
