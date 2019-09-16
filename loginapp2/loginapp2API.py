@@ -23,7 +23,7 @@ def detaios(request):
             return JsonResponse({
                 'code': 300,
                 'msg': "用户未登录,请重新登录"
-    })
+                                 })
         else:
             user = UserModel.objects.filter(id=user_id)
             print(user)
@@ -45,6 +45,7 @@ def detaios(request):
 
 @csrf_exempt
 def change(request):
+
     if request.method == "POST":
         date = json.loads(request.body)
         print(date)
@@ -76,6 +77,7 @@ def change(request):
                     'code': 300,
                     'msg': '没有找到用户'
                 })
+
 
 
 def loginout(request):
@@ -160,4 +162,4 @@ def u_img(request):
     return JsonResponse({
         'code': 200,
         'url': img_url
-        })
+    })

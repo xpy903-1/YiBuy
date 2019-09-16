@@ -35,9 +35,6 @@ def login_pwd(request):
     if request.method == 'GET':
         return render(request, 'login.html')
 
-
-    data = request.body
-
     data = json.loads(request.body.decode())
 
     phone = data.get('u_phone', None)
@@ -55,6 +52,10 @@ def login_pwd(request):
             response = JsonResponse({
                 'code': 200,
                 'msg': '登录成功',
+<<<<<<< HEAD
+=======
+                'token': 'phone.id'
+>>>>>>> 824c156ad8de29e0aa138439f7cd23e88d578dec
             })
             response.set_cookie('token', token, expires=60 * 10)
             request.session[token] = phone.id
