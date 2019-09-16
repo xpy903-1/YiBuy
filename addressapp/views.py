@@ -62,7 +62,6 @@ def address_query(request):
 
 @csrf_exempt
 def address_add(request):
-
     if request.method == 'POST':
         user_id = UserModel.objects.get(pk=request.POST.get('user_id', None))
         name = request.POST.get('name', None)

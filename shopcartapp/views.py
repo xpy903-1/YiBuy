@@ -94,8 +94,8 @@ def shop_cart(request):
         # dict['goods_detail'] = list(picture)
 
         return JsonResponse({
-            'cart_datas': ser_shop.data,
-            'ser_picture': ser_picture.data
+            'data': ser_shop.data,
+            'picture': ser_picture.data
         }, safe=False)
 
 
@@ -127,7 +127,7 @@ def is_goodsed(request):
         ser = GoodsSerializer(is_selected, many=True)
         return JsonResponse({
             'code': 200,
-            'datas': ser.data,
+            'data': ser.data,
             'msg': 'OK'
         })
 
@@ -148,10 +148,11 @@ def goods_add(request):
         add_data.user_id = user_id
         add_data.good_id = good_id
         add_data.count = count
+        add_data.save()
 
-        if ShopCarModel.objects.aggregate(cnt=Count('count')) > 1:
+        cnt = ShopCarModel.objects.aggregate(cnt=Count('count'))
+        if cnt['cnt'] > 1:
             add_data.count += count
-        else:
             add_data.save()
         return JsonResponse({
             'code': 200,
@@ -212,7 +213,7 @@ def goods_delete(request):
                 'msg': '请求的商品ID不存在'
             })
     # else:
-    #     return render(request, 'adsdelete.html')
+    #     return render(request, '.html')
 
 # def add_shopcart(request, id):
 # login_user = request.session.get('login_user', None)

@@ -4,7 +4,6 @@ from shopcartapp.views import hot_goods, is_goodsed
 
 app_name = 'shopcartapp'
 
-
 urlpatterns = [
     path('shopcart/', shop_cart),
     path('hotgood/', hot_goods, name='hot'),
