@@ -12,15 +12,11 @@ class AddressTest(TestCase):
                           })
         print(r.text)
 
-
     def test_add(self):
-       pass
-
+        pass
 
     def test_edit(self):
         pass
-
-
 
     def test_delete(self):
         pass

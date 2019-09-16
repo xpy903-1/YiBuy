@@ -40,7 +40,7 @@ class ShopCarModel(models.Model):
 
     class Meta:
         db_table = 'car_table'  # 表名
-        verbose_name_plural = "购物车"  # 清除复数中文名
+        verbose_name_plural = "购物车表"  # 清除复数中文名
 
 
 # 商品图片模板
@@ -79,4 +79,4 @@ class PictureModel(models.Model):
 
     class Meta:
         db_table = 'picture_table'  # 表名
-        verbose_name_plural = "图片表"  # 清除复数中文名
+        verbose_name_plural = "购物车图片表"  # 清除复数中文名
